@@ -1,3 +1,4 @@
+require('dotenv').config();
 require('newrelic');
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -28,11 +29,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // simple route
 app.get("/", (req, res) => {
-    res.json({message: "Welcome to bezkoder application."});
+    res.json({message: "Welcome to  application."});
 });
 
-require("./app/routes/questionnaire.routes")(app);
+require("./app/routes/exam.routes")(app);
 require("./app/routes/login.routes")(app);
+require("./app/routes/answer.route")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

@@ -5,12 +5,27 @@ module.exports = mongoose => {
         {
             username: {
                 type: String,
-                required: true
+                required: true,
+                unique: true
+            },
+            name: {
+                type: String,
+                required: true,
+            },
+            lastName: {
+                type: String,
+                required: true,
             },
             password: {
                 type: String,
                 required: true
-            }
+            },
+            role: {
+                type: String,
+                default: 'ADMIN',
+                required: [true],
+                enum: ['USER', 'ADMIN', 'ROOT'],
+            },
         },
         {timestamps: true}
     );
@@ -18,6 +33,8 @@ module.exports = mongoose => {
     schema.method("toJSON", function () {
         const {__v, _id, ...object} = this.toObject();
         object.id = _id;
+        delete object.password;
+
         return object;
     });
 

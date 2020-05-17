@@ -12,8 +12,8 @@ const optionSchema = new mongoose.Schema({
     }
 });
 
-const Question = new mongoose.Schema({
-    question: {
+const QuestionSchema = new mongoose.Schema({
+    text: {
         type: String,
         required: true
     },
@@ -21,15 +21,25 @@ const Question = new mongoose.Schema({
 });
 
 module.exports = mongoose => {
-    var schema = mongoose.Schema(
+    const schema = mongoose.Schema(
         {
-            questions: {
-                type: [Question],
-                required: true
-            },
-            title: {
+            text: {
                 type: String,
                 required: true
+            },
+            questions: {
+                type: [QuestionSchema],
+                required: true
+            },
+            answers: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "answer"
+                }
+            ],
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "user"
             }
         },
         {timestamps: true}
@@ -41,6 +51,6 @@ module.exports = mongoose => {
         return object;
     });
 
-    const Questionnaire = mongoose.model("questionnaire", schema);
-    return Questionnaire;
+    const Exam = mongoose.model("exam", schema);
+    return Exam;
 };

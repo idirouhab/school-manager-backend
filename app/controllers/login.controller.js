@@ -1,14 +1,22 @@
 const db = require("../models");
-const bcrypt = require("bcryptjs")
 const User = db.user;
+const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+
 
 // Create and Save a new Questionnaire
 exports.create = (req, res) => {
-    const username = req.query.username;
-    const password = req.query.password;
+    const userBody = req.body.user;
+    const username = userBody.username;
+    const password = userBody.password;
+    const name = userBody.name;
+    const lastName = userBody.lastName;
+    console.log(userBody)
     const user = new User({
         username,
-        password: bcrypt.hashSync(password, 10)
+        password: bcrypt.hashSync(password, 10),
+        name,
+        lastName,
     });
     // Save Tutorial in the database
     user
@@ -36,8 +44,13 @@ exports.findOne = (req, res) => {
                 res.status(404).send({message: "Not found User"});
             } else {
                 if (bcrypt.compareSync(password, data.password)) {
-                    res.send(data)
-                }else{
+                    let token = jwt.sign(
+                        {user: data},
+                        process.env.JWT_SECRET,
+                        {expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME})
+                    data['token'] = token;
+                    res.send({user: data, token: token})
+                } else {
                     res.status(403).send({message: "Forbidden"});
                 }
             }

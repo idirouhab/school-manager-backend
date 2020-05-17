@@ -18,11 +18,13 @@ exports.updateExamAnswers = (examId, answerId) => {
         {new: true})
 }
 
+exports.findAll = (userId, role) => {
 
-exports.findAll = (userId) => {
-    return Exam.find({
+    let filter = role === 'ROOT' ? {} : {
         "userId": userId
-    }).populate('answers');
+    };
+
+    return Exam.find(filter).populate('userId', 'name');
 };
 
 exports.findOne = (id) => {

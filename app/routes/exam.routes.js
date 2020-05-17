@@ -16,6 +16,5 @@ module.exports = app => {
 
     router.delete("/:id", [verifyToken], exam.delete);
 
-
     app.use('/api/exam', router);
 };

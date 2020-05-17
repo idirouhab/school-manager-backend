@@ -16,8 +16,7 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-
-    provider.findAll(req.userId)
+    provider.findAll(req.userId, req.role)
         .then(data => {
             res.send(data);
         })

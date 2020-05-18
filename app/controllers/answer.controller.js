@@ -75,7 +75,10 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    provider.delete(req.params.id)
+    const answerId = req.params.id;
+    const userId = req.userId;
+
+    provider.delete(answerId, userId)
         .then(data => {
             if (!data) {
                 res.status(404).send({

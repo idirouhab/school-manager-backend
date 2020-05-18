@@ -1,5 +1,5 @@
-const db = require("../models");
 const provider = require("../providers/exam.provider")
+const answerProvider = require("../providers/answer.provider")
 
 exports.create = (req, res) => {
     provider.create(req.body.exam, req.userId)
@@ -67,6 +67,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+    const userId = req.userId;
     provider.delete(req.params.id)
         .then(data => {
             if (!data) {
@@ -74,8 +75,21 @@ exports.delete = (req, res) => {
                     message: `Cannot delete Exam with id=${id}. Maybe Exam was not found!`
                 });
             } else {
-                res.send({
-                    message: "Exam was deleted successfully!"
+                answerProvider.deleteAnswers(data.answers)
+                    .then(data => {
+                        if (!data) {
+                            res.status(404).send({
+                                message: `Cannot delete Answers. Maybe Answers was not found!`
+                            });
+                        } else {
+                            res.send({
+                                message: "Answers was deleted successfully!"
+                            });
+                        }
+                    }).catch(err => {
+                    res.status(500).send({
+                        message: "Could not delete Answer"
+                    });
                 });
             }
         })

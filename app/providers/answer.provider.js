@@ -24,24 +24,17 @@ exports.update = (id, data) => {
     );
 };
 
-exports.delete = (id) => {
-    return Answer.findByIdAndRemove(id)
-        .then(data => {
-            if (!data) {
-                res.status(404).send({
-                    message: `Cannot delete Exam with id=${id}. Maybe Exam was not found!`
-                });
-            } else {
-                res.send({
-                    message: "Exam was deleted successfully!"
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete Exam with id=" + id
-            });
-        });
+exports.deleteAnswers = (ids)=>{
+    return Answer.remove({
+        "_id":{
+            $in: ids
+        }
+    })
+};
+
+exports.delete = (id, userId) => {
+
+    return Answer.findByIdAndRemove(id);
 };
 
 

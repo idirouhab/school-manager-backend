@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // simple route
 app.get("/", (req, res) => {
-    res.json({message: "Welcome to  application."});
+    res.json({});
 });
 
 require("./app/routes/exam.routes")(app);

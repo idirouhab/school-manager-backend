@@ -37,6 +37,15 @@ exports.update = (id, data) => {
     );
 };
 
+exports.updateOne = (filter, data) => {
+    return Exam.findOneAndUpdate(
+        filter,
+        data,
+        {useFindAndModify: false}
+    );
+};
+
+
 exports.delete = (id) => {
     return Exam.findByIdAndRemove(id)
 };

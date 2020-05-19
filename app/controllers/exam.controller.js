@@ -59,8 +59,9 @@ exports.update = (req, res) => {
             } else res.send({message: "Exam was updated successfully."});
         })
         .catch(err => {
+            console.log(err);
             res.status(500).send({
-                message: "Error updating Exam with id=" + id
+                message: "Error updating Exam"
             });
         });
 };

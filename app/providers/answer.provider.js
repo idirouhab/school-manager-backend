@@ -12,11 +12,10 @@ exports.findAll = () => {
 };
 
 exports.findOne = (id) => {
-    return Answer.findById(id)
+    return Answer.findById(id);
 };
 
 exports.update = (id, data) => {
-
     return Answer.findByIdAndUpdate(
         id,
         data,
@@ -24,9 +23,9 @@ exports.update = (id, data) => {
     );
 };
 
-exports.deleteAnswers = (ids)=>{
+exports.deleteAnswers = (ids) => {
     return Answer.remove({
-        "_id":{
+        "_id": {
             $in: ids
         }
     })

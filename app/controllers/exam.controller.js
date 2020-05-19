@@ -50,7 +50,6 @@ exports.update = (req, res) => {
             message: "Data to update can not be empty!"
         });
     }
-
     provider.update(req.params.id, req.body.exam)
         .then(data => {
             if (!data) {

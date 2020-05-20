@@ -35,5 +35,3 @@ exports.delete = (id, userId) => {
 
     return Answer.findByIdAndRemove(id);
 };
-
-

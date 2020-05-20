@@ -1,4 +1,3 @@
-const db = require("../models");
 const folderProvider = require("../providers/folder.provider");
 const examProvider = require("../providers/exam.provider");
 

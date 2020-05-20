@@ -12,7 +12,6 @@ exports.create = (req, res) => {
                     err.message || "Some error occurred while creating the Exam."
             });
         });
-
 };
 
 exports.findAll = (req, res) => {
@@ -27,7 +26,6 @@ exports.findAll = (req, res) => {
             });
         });
 };
-
 
 exports.findOne = (req, res) => {
     provider
@@ -99,4 +97,3 @@ exports.delete = (req, res) => {
             });
         });
 };
-

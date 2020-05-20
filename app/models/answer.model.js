@@ -41,6 +41,5 @@ module.exports = mongoose => {
         return object;
     });
 
-    const Answer = mongoose.model("answer", schema);
-    return Answer;
+    return mongoose.model("answer", schema);
 };

@@ -3,22 +3,18 @@ const User = db.user;
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 
-
-// Create and Save a new Questionnaire
 exports.create = (req, res) => {
     const userBody = req.body.user;
     const username = userBody.username;
     const password = userBody.password;
     const name = userBody.name;
     const lastName = userBody.lastName;
-    console.log(userBody)
     const user = new User({
         username,
         password: bcrypt.hashSync(password, 10),
         name,
         lastName,
     });
-    // Save Tutorial in the database
     user
         .save(user)
         .then(data => {
@@ -27,10 +23,9 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Questionnaire."
+                    err.message || "Some error occurred while creating the user."
             });
         });
-
 };
 
 // Find a single User with an id
@@ -47,7 +42,7 @@ exports.findOne = (req, res) => {
                     let token = jwt.sign(
                         {user: data},
                         process.env.JWT_SECRET,
-                        {expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME})
+                        {expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME});
                     data['token'] = token;
                     res.send({user: data, token: token})
                 } else {

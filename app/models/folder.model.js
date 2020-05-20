@@ -36,6 +36,5 @@ module.exports = mongoose => {
         return object;
     });
 
-    const Folder = mongoose.model("folder", schema);
-    return Folder;
+    return mongoose.model("folder", schema);
 };

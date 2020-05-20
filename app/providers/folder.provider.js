@@ -13,12 +13,10 @@ exports.findAll = (userId, role) => {
         "userId": userId
     };
 
-
     return Folder.find(filter);
 };
 
 exports.findOne = (id, userId, role) => {
-
     let filter = {
         '_id': id
     };
@@ -43,5 +41,3 @@ exports.update = (id, userId, data) => {
         {useFindAndModify: false}
     );
 };
-
-

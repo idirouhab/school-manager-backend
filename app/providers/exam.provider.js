@@ -45,9 +45,6 @@ exports.updateOne = (filter, data) => {
     );
 };
 
-
 exports.delete = (id) => {
     return Exam.findByIdAndRemove(id)
 };
-
-

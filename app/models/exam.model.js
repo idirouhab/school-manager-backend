@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const optionSchema = new mongoose.Schema({
     text: {
         type: String,
@@ -57,6 +56,5 @@ module.exports = mongoose => {
         return object;
     });
 
-    const Exam = mongoose.model("exam", schema);
-    return Exam;
+    return mongoose.model("exam", schema);
 };

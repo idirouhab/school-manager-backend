@@ -1,4 +1,3 @@
-const db = require("../models");
 const provider = require("../providers/answer.provider");
 const examProvider = require("../providers/exam.provider")
 
@@ -19,11 +18,9 @@ exports.create = (req, res) => {
                     err.message || "Some error occurred while creating the Answer."
             });
         });
-
 };
 
 exports.findAll = (req, res) => {
-
     provider.findAll()
         .then(data => {
             res.send(data);
@@ -35,7 +32,6 @@ exports.findAll = (req, res) => {
             });
         });
 };
-
 
 exports.findOne = (req, res) => {
     provider
@@ -96,4 +92,3 @@ exports.delete = (req, res) => {
             });
         });
 };
-

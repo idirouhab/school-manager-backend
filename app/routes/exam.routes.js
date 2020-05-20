@@ -1,6 +1,5 @@
 const {verifyToken} = require("../config/auth.middleware");
 
-
 module.exports = app => {
     const exam = require("../controllers/exam.controller.js");
 

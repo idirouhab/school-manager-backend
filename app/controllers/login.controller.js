@@ -2,6 +2,7 @@ const db = require("../models");
 const User = db.user;
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const userProvider = require('../providers/user.provider')
 
 exports.create = (req, res) => {
     const userBody = req.body.user;
@@ -54,5 +55,52 @@ exports.findOne = (req, res) => {
             res
                 .status(500)
                 .send({message: "Error retrieving User"});
+        });
+};
+
+exports.findAll = (req, res) =>{
+    console.log(req.role)
+    if(req.role !=='ROOT'){
+        res.status(403).send({message: "Forbidden"});
+        return
+    }
+
+    userProvider.findAll()
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+};
+
+exports.delete = (req, res) => {
+    const userId = req.params.id;
+
+
+    if(req.role !=='ROOT'){
+        res.status(403).send({message: "Forbidden"});
+        return
+    }
+
+    userProvider.delete(userId)
+        .then(data => {
+            if (!data) {
+                res.status(404).send({
+                    message: `Cannot delete Answer with id=${id}. Maybe Answer was not found!`
+                });
+            } else {
+                res.send({
+                    message: "Answer was deleted successfully!"
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Could not delete Answer with id=" + id
+            });
         });
 };

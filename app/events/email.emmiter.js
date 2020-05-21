@@ -21,7 +21,6 @@ eventEmitter.on('notify_teacher_new_exam', (examId, answer) => {
             }
         };
 
-        console.log(message,);
         nodemailer.createTransport(transport).sendMail(message);
     });
 });

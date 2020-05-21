@@ -1,3 +1,5 @@
+const eventEmitter = require("../events/email.emmiter");
+
 const provider = require("../providers/answer.provider");
 const examProvider = require("../providers/exam.provider")
 
@@ -7,8 +9,9 @@ exports.create = (req, res) => {
 
     provider.create(req.body.answer)
         .then(data => {
-            examProvider.updateExamAnswers(examId,data._id).then(
+            examProvider.updateExamAnswers(examId, data._id).then(
                 (data) => {
+                    eventEmitter.emit("notify_teacher_new_exam", examId, answer)
                     res.send(data);
                 })
         })

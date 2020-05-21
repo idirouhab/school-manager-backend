@@ -17,7 +17,6 @@ exports.updateExamAnswers = (examId, answerId) => {
 };
 
 exports.findAll = (userId, role) => {
-
     let filter = role === 'ROOT' ? {} : {
         "userId": userId
     };

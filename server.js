@@ -24,6 +24,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use('/uploads', express.static('uploads'))
 app.get("/", (req, res) => {
     res.json({});
 });
@@ -33,6 +34,7 @@ require("./app/routes/login.routes")(app);
 require("./app/routes/answer.route")(app);
 require("./app/routes/folder.route")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/image.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

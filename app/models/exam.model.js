@@ -17,6 +17,10 @@ const QuestionSchema = new mongoose.Schema({
         required: true
     },
     options: [optionSchema],
+    image: {
+        type: String,
+        default: null
+    }
 });
 
 module.exports = mongoose => {
@@ -45,7 +49,7 @@ module.exports = mongoose => {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "folder",
                 default: null
-            }
+            },
         },
         {timestamps: true}
     );

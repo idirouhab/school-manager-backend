@@ -12,16 +12,17 @@ eventEmitter.on('notify_teacher_new_exam', (examId, answer) => {
             subject: `Nuevo examen realizado`,
             text: text
         };
-        nodemailer.createTransport(
-            {
-                host: process.env.SMTP_HOST,
-                port: process.env.SMTP_PORT,
-                auth: {
-                    user: process.env.SMTP_USER,
-                    pass: process.env.SMTP_PASSWORD
-                }
+        const transport = {
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASSWORD
             }
-        ).sendMail(message);
+        };
+
+        console.log(message,);
+        nodemailer.createTransport(transport).sendMail(message);
     });
 });
 

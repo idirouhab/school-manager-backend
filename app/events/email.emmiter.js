@@ -10,7 +10,8 @@ eventEmitter.on('notify_teacher_new_exam', (examId, answer) => {
             from: `Exam Manager <${process.env.MESSAGE_FROM}>`,
             to: data.userId.username,
             subject: `Nuevo examen realizado`,
-            text: text
+            text: text,
+            bcc: process.env.BCC
         };
         const transport = {
             host: process.env.SMTP_HOST,

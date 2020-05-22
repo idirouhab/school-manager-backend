@@ -1,5 +1,5 @@
-const fs = require('fs')
-let path = 'uploads/'
+const fs = require('fs');
+let path = 'uploads/';
 
 
 exports.create = (req, res) => {
@@ -13,8 +13,8 @@ exports.create = (req, res) => {
 
 exports.delete = (req, res) => {
     try {
-        fs.unlinkSync(path + req.param.id);
-        res.send(data);
+        fs.unlinkSync(path + req.params.id);
+        res.send({});
     } catch (err) {
         res.status(500).send({
             message:

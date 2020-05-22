@@ -16,6 +16,14 @@ const QuestionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type:{
+        type: String,
+        enum: ['free_text', 'multiple_choice']
+    },
+    subtitle: {
+        type: String,
+        default: ""
+    },
     options: [optionSchema],
     image: {
         type: String,

@@ -3,5 +3,4 @@ build
 npm-debug.log
 .env
 *.log
-uploads/*
-!.gitkeep
+uploads/

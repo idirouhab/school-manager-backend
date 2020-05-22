@@ -1,15 +1,33 @@
 const fs = require('fs');
+const Jimp = require('jimp');
 let path = 'uploads/';
 
 
 exports.create = (req, res) => {
+    const imageId = req.imageName;
+    const fullPath = path + imageId;
     const data = {
-        uuid: req.imageName
+        uuid: imageId
     };
 
-    res.send(data);
-};
+    Jimp.read(fullPath).then(image => {
+        const height = (image.bitmap.width * 9) / 16;
+        return image
+            .resize(image.bitmap.width, height)
+            .quality(60)
+            .greyscale()
+            .write(fullPath);
+    }).catch((err)=>{
+        fs.unlinkSync(fullPath);
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while deleting the Image."
+        });
+    }).finally(()=>{
+        res.send(data)
+    });
 
+};
 
 exports.delete = (req, res) => {
     try {

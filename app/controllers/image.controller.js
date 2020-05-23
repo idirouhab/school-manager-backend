@@ -1,42 +1,52 @@
-const fs = require('fs');
-const Jimp = require('jimp');
-let path = 'uploads/';
+const imageProvider = require('../providers/image.provider');
+
+const azureStorage = require('azure-storage');
+const blobService = azureStorage.createBlobService();
+const containerName = 'exam-manager';
 
 
 exports.create = (req, res) => {
-    const imageId = req.imageName;
-    const fullPath = path + imageId;
-    const data = {
-        uuid: imageId
-    };
-
-    Jimp.read(fullPath).then(image => {
-        const height = (image.bitmap.width * 9) / 16;
-        return image
-            .resize(image.bitmap.width, height)
-            .quality(60)
-            .greyscale()
-            .write(fullPath);
-    }).catch((err)=>{
-        fs.unlinkSync(fullPath);
+    try {
+        imageProvider.create(req.file, req.userId).then((data) => {
+            if (!data) {
+                res.status(500).send({
+                    message: "Some error occurred while creating the Image."
+                });
+            } else {
+                res.send({
+                    uuid: data.name
+                })
+            }
+        })
+    } catch (e) {
         res.status(500).send({
-            message:
-                err.message || "Some error occurred while deleting the Image."
+            message: "Some error occurred while creating the Image."
         });
-    }).finally(()=>{
-        res.send(data)
+    }
+};
+
+exports.findOne = (req, res) => {
+    const blobName = req.params.id;
+    blobService.getBlobToStream(containerName, blobName, res, function (error, blob) {
+        if (!error) { // blob retrieved
+            res.end(); // no need to writeHead
+        } else {
+            res.end();
+        }
+    });
+};
+
+exports.delete = (req, res) => {
+    imageProvider.delete(req.params.id, (err)=>{
+        if (err) {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while deleting the Image."
+            });
+            return
+        }
+        res.send({});
     });
 
 };
 
-exports.delete = (req, res) => {
-    try {
-        fs.unlinkSync(path + req.params.id);
-        res.send({});
-    } catch (err) {
-        res.status(500).send({
-            message:
-                err.message || "Some error occurred while deleting the Image."
-        });
-    }
-};

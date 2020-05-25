@@ -1,5 +1,4 @@
 const imageProvider = require('../providers/image.provider');
-
 const azureStorage = require('azure-storage');
 const blobService = azureStorage.createBlobService();
 const containerName = 'exam-manager';

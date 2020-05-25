@@ -2,7 +2,7 @@ const db = require("../models");
 const User = db.user;
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const userProvider = require('../providers/user.provider')
+const userProvider = require('../providers/user.provider');
 
 exports.create = (req, res) => {
     const userBody = req.body.user;

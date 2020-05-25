@@ -23,7 +23,7 @@ module.exports = mongoose => {
             role: {
                 type: String,
                 default: 'ADMIN',
-                required: [true],
+                required: true,
                 enum: ['USER', 'ADMIN', 'ROOT'],
             },
         },

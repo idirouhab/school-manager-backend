@@ -38,6 +38,9 @@ module.exports = mongoose => {
                 type: String,
                 required: true
             },
+            subtitle: {
+                type: String,
+            },
             questions: {
                 type: [QuestionSchema],
                 required: true

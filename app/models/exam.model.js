@@ -20,10 +20,6 @@ const QuestionSchema = new mongoose.Schema({
         type: String,
         enum: ['free_text', 'multiple_choice']
     },
-    subtitle: {
-        type: String,
-        default: ""
-    },
     options: [optionSchema],
     image: {
         type: String,
@@ -40,6 +36,7 @@ module.exports = mongoose => {
             },
             subtitle: {
                 type: String,
+                default: ""
             },
             questions: {
                 type: [QuestionSchema],

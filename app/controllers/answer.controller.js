@@ -4,7 +4,7 @@ const provider = require("../providers/answer.provider");
 const examProvider = require("../providers/exam.provider")
 
 exports.create = (req, res) => {
-    const answer = req.body.answer
+    const answer = req.body.answer;
     const examId = answer.examId;
 
     provider.create(req.body.answer)

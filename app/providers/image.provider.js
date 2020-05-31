@@ -3,7 +3,21 @@ const imageService = require('../services/image.service')
 const getStream = require('into-stream');
 const azureStorage = require('azure-storage');
 const blobService = azureStorage.createBlobService();
-const containerName = 'exam-manager';
+const containerName = process.env.CONTAINER_NAME;
+
+exports.findOne = (blobName, res) => {
+    return new Promise((resolve, reject) => {
+        blobService.getBlobToStream(containerName, blobName, res, function (error, blob) {
+            if (!error) { // blob retrieved
+                resolve(res)
+                //res.end();
+            } else {
+                reject(res)
+               // res.end();
+            }
+        });
+    })
+};
 
 exports.create = (file, userId) => {
     const imageId = fromString(new Date() + userId);

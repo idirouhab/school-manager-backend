@@ -1,8 +1,4 @@
 const imageProvider = require('../providers/image.provider');
-const azureStorage = require('azure-storage');
-const blobService = azureStorage.createBlobService();
-const containerName = 'exam-manager';
-
 
 exports.create = (req, res) => {
     try {
@@ -26,13 +22,11 @@ exports.create = (req, res) => {
 
 exports.findOne = (req, res) => {
     const blobName = req.params.id;
-    blobService.getBlobToStream(containerName, blobName, res, function (error, blob) {
-        if (!error) { // blob retrieved
-            res.end(); // no need to writeHead
-        } else {
-            res.end();
-        }
-    });
+    imageProvider.findOne(blobName, res).then(res => {
+        res.end()
+    }).catch(res => {
+        res.end()
+    })
 };
 
 exports.findAll = (req, res) => {

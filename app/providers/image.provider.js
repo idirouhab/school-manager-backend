@@ -13,7 +13,15 @@ exports.create = (file, userId) => {
         return imageService.resize(file.buffer).then((image) => {
             const stream = getStream(image);
             const streamLength = image.length;
-            const options = {contentSettings: {contentType: mimeType}};
+            const options = {
+                contentSettings: {
+                    contentType: mimeType,
+
+                },
+                metadata: {
+                    userId
+                }
+            };
 
             return blobService.createBlockBlobFromStream(containerName, imageId, stream, streamLength, options, (err) => {
 
@@ -25,6 +33,25 @@ exports.create = (file, userId) => {
         throw e;
     }
 
+};
+
+exports.findAll = () => {
+
+    return new Promise((resolve, reject) => {
+        let listImageIds = [];
+        blobService.listBlobsSegmented(containerName, null, (err, data) => {
+            data.entries.forEach(entry => {
+                listImageIds.push(
+                    {
+                        id: entry.name,
+                        contentLength: entry.contentLength
+                    }
+                )
+            });
+            resolve(listImageIds)
+        });
+
+    })
 };
 
 exports.delete = (fileId, cb) => {

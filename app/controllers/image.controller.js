@@ -35,8 +35,16 @@ exports.findOne = (req, res) => {
     });
 };
 
+exports.findAll = (req, res) => {
+
+    imageProvider.findAll().then(images => {
+
+        res.send(images);
+    });
+};
+
 exports.delete = (req, res) => {
-    imageProvider.delete(req.params.id, (err)=>{
+    imageProvider.delete(req.params.id, (err) => {
         if (err) {
             res.status(500).send({
                 message:

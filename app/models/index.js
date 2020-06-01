@@ -10,6 +10,5 @@ db.exam = require("./exam.model.js")(mongoose);
 db.user = require("./user.model.js")(mongoose);
 db.answer = require("./answer.model.js")(mongoose);
 db.folder = require("./folder.model.js")(mongoose);
-db.session = require("./session.model.js")(mongoose);
 
 module.exports = db;

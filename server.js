@@ -35,7 +35,6 @@ require("./app/routes/folder.route")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/image.routes")(app);
 require("./app/routes/document.route")(app);
-require("./app/routes/session.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

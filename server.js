@@ -21,9 +21,9 @@ db.mongoose
     );
 
 app.use(cors());
+app.use('/static', express.static('./public'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use('/uploads', express.static('uploads'))
 app.get("/", (req, res) => {
     res.json({});
 });

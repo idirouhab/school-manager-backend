@@ -10,10 +10,8 @@ exports.findOne = (blobName, res) => {
         blobService.getBlobToStream(containerName, blobName, res, function (error, blob) {
             if (!error) { // blob retrieved
                 resolve(res)
-                //res.end();
             } else {
                 reject(res)
-               // res.end();
             }
         });
     })
@@ -23,30 +21,35 @@ exports.create = (file, userId) => {
     const imageId = fromString(new Date() + userId);
     const mimeType = file.mimetype;
 
-    try {
-        return imageService.resize(file.buffer).then((image) => {
-            const stream = getStream(image);
-            const streamLength = image.length;
+    return new Promise((resolve, reject) => {
+        try {
+            const stream = getStream(file.buffer);
+            const streamLength = file.buffer.length;
             const options = {
                 contentSettings: {
                     contentType: mimeType,
-
                 },
                 metadata: {
                     userId
                 }
             };
-
             return blobService.createBlockBlobFromStream(containerName, imageId, stream, streamLength, options, (err) => {
-
-                return imageId;
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(
+                        {
+                            filename: imageId,
+                            originalname: file.originalname,
+                            size: streamLength,
+                        }
+                    );
+                }
             })
-        })
-
-    } catch (e) {
-        throw e;
-    }
-
+        } catch (e) {
+            reject(e);
+        }
+    });
 };
 
 exports.findAll = () => {

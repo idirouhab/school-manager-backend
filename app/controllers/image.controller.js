@@ -9,7 +9,7 @@ exports.create = (req, res) => {
                 });
             } else {
                 res.send({
-                    uuid: data.name
+                    uuid: data.filename
                 })
             }
         })

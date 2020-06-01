@@ -7,6 +7,6 @@ module.exports = app => {
 
     router.get("/:documentName", [verifyToken, verifyRoot], document.findAll);
     router.get("/:documentName/:id", [verifyToken, verifyRoot], document.findOne);
-
+    router.put("/:documentName/:id", [verifyToken, verifyRoot], document.update);
     app.use('/api/document', router);
 };

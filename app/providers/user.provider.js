@@ -15,6 +15,16 @@ exports.findOne = (id) => {
 
 };
 
+
+exports.update = (id, user) => {
+    return User.findByIdAndUpdate(
+        id,
+        user,
+        {useFindAndModify: false}
+    );
+};
+
+
 exports.delete = (id) => {
     return User.findByIdAndRemove(id);
 };

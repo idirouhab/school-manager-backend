@@ -58,9 +58,8 @@ exports.findOne = (req, res) => {
         });
 };
 
-exports.findAll = (req, res) =>{
-    console.log(req.role)
-    if(req.role !=='ROOT'){
+exports.findAll = (req, res) => {
+    if (req.role !== 'ROOT') {
         res.status(403).send({message: "Forbidden"});
         return
     }
@@ -81,7 +80,7 @@ exports.delete = (req, res) => {
     const userId = req.params.id;
 
 
-    if(req.role !=='ROOT'){
+    if (req.role !== 'ROOT') {
         res.status(403).send({message: "Forbidden"});
         return
     }
@@ -103,4 +102,8 @@ exports.delete = (req, res) => {
                 message: "Could not delete Answer with id=" + id
             });
         });
+};
+
+exports.resendTokenPost = (req, res) => {
+
 };

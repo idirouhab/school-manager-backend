@@ -1,5 +1,4 @@
-const {verifyToken} = require("../config/auth.middleware");
-const {verifyRoot} = require("../config/root.middleware");
+const {verifyToken, verifyRoot} = require("../config/auth.middleware");
 const multer = require('multer');
 const inMemoryStorage = multer.memoryStorage();
 const singleFileUpload = multer({storage: inMemoryStorage});

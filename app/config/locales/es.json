@@ -1,0 +1,7 @@
+{
+  "newExam": {
+    "subject": "Nuevo examen realizado",
+    "title": "Hola {{username}}!",
+    "body": "{{playerName}} ha completado la terea '{{examTitle}}' con una nota de {{score}} sobre {{numberQuestions}}."
+  }
+}

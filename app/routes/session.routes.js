@@ -1,4 +1,4 @@
-const {verifyToken} = require("../config/auth.middleware");
+const {verifyToken, verifyRoot} = require("../config/auth.middleware");
 
 module.exports = app => {
     const session = require("../controllers/session.controller.js");
@@ -6,7 +6,7 @@ module.exports = app => {
 
     router.post("/", [verifyToken], session.create);
 
-    router.get("/", [verifyToken], session.findAll);
+    router.get("/", [verifyToken, verifyRoot], session.findAll);
 
     app.use('/api/session', router);
 };

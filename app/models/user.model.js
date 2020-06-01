@@ -1,7 +1,5 @@
-const mongoose = require('mongoose');
-
 module.exports = mongoose => {
-    var schema = mongoose.Schema(
+    const schema = mongoose.Schema(
         {
             username: {
                 type: String,
@@ -25,6 +23,10 @@ module.exports = mongoose => {
                 default: 'ADMIN',
                 required: true,
                 enum: ['USER', 'ADMIN', 'ROOT'],
+            },
+            isVerified: {
+                type: Boolean,
+                default: false
             },
         },
         {timestamps: true}

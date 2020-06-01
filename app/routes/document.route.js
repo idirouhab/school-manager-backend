@@ -1,5 +1,4 @@
-const {verifyRoot} = require("../config/root.middleware");
-const {verifyToken} = require("../config/auth.middleware");
+const {verifyToken,verifyRoot} = require("../config/auth.middleware");
 
 module.exports = app => {
     const document = require("../controllers/document.controller.js");

@@ -4,9 +4,7 @@ module.exports = app => {
 
     router.post("/", login.create);
 
-    router.post('/confirmation', login.confirmation);
-
-    router.post('/resend', login.resendToken);
+    router.get('/confirmation/:token', login.confirmation);
 
     router.get("/", login.findOne);
 

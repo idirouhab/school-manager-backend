@@ -3,5 +3,12 @@
     "subject": "Nuevo examen realizado",
     "title": "Hola {{username}}!",
     "body": "{{playerName}} ha completado la terea '{{examTitle}}' con una nota de {{score}} sobre {{numberQuestions}}."
-  }
+  },
+  "confirm": {
+    "subject": "Gracias por re",
+    "title": "Gracias por registrarte en Tinaptic.com! ¿Ahora que?",
+    "body": "Confirma tu dirección de correo electrónico para comenzar a administrar tus exámenes en Tinaptic.",
+    "button": "Confirmar"
+  },
+  "account_verification": "Verificación de la cuenta."
 }

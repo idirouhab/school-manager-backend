@@ -6,6 +6,7 @@ exports.findUserByExamId = (id) => {
     return Exam.findById(id).populate('userId', ['name', 'username']);
 };
 
+
 exports.findAll = () => {
     return User.find({}, {password: 0});
 };
@@ -14,7 +15,6 @@ exports.findOne = (id) => {
     return User.findById((id), {password: 0});
 
 };
-
 
 exports.update = (id, user) => {
     return User.findByIdAndUpdate(

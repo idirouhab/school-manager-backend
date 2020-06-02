@@ -1,17 +1,25 @@
 const db = require("../models");
 const User = db.user;
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const userProvider = require("../providers/user.provider");
+const emailService = require("../services/email.service");
+const tokenProvider = require("../providers/token.provider");
 
 exports.confirmation = (req, res) => {
-
+  const token = req.params.token;
+  tokenProvider.findOne(token)
+    .then((token) => {
+      if (!token) return res.status(400).send({ message: "We were unable to find a valid token. Your token my have expired." });
+      const userId = token.userId;
+      userProvider.update(userId, { isVerified: true }).then((data => {
+        res.redirect('https://tinaptic.com')
+      })).catch(err => {
+        res.status(500).send({ message: err.message });
+      });
+    });
 };
-
-exports.resendToken = (req, res) => {
-
-};
-
 
 exports.create = (req, res) => {
   const userBody = req.body.user;
@@ -27,8 +35,15 @@ exports.create = (req, res) => {
   });
   user
     .save(user)
-    .then(data => {
-      res.send(data);
+    .then(dataUser => {
+      const tokenData = { userId: dataUser.id, token: crypto.randomBytes(16).toString("hex") };
+      tokenProvider.create(tokenData).then(
+        (dataToken) => {
+          emailService.sendConfirmation(dataUser, dataToken, req.headers.host);
+          res.send();
+        }).catch(err => {
+        res.status(500).send({ message: err.message });
+      });
     })
     .catch(err => {
       res.status(500).send({
@@ -44,19 +59,20 @@ exports.findOne = (req, res) => {
   const password = req.query.password;
 
   User.findOne({ username })
-    .then(data => {
-      if (!data) {
-        res.status(404).send({ message: "Not found User" });
+    .then(user => {
+      if (!user) {
+        res.status(401).send({ message: "The email address " + username + " is not associated with any account." });
       } else {
-        if (bcrypt.compareSync(password, data.password)) {
+        if (bcrypt.compareSync(password, user.password)) {
+          if (!user.isVerified) return res.status(401).send({ msg: "Your account has not been verified." });
           let token = jwt.sign(
-            { user: data },
+            { user },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
-          data["token"] = token;
-          res.send({ user: data, token: token });
+          user["token"] = token;
+          res.send({ user, token: token });
         } else {
-          res.status(403).send({ message: "Forbidden" });
+          res.status(401).send({ message: "Invalid email or password" });
         }
       }
     })

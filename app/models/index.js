@@ -11,5 +11,6 @@ db.user = require("./user.model.js")(mongoose);
 db.answer = require("./answer.model.js")(mongoose);
 db.folder = require("./folder.model.js")(mongoose);
 db.event = require("./event.model.js")(mongoose);
+db.token = require("./token.model.js")(mongoose);
 
 module.exports = db;

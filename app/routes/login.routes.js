@@ -4,6 +4,10 @@ module.exports = app => {
 
     router.post("/", login.create);
 
+    router.post('/confirmation', login.confirmation);
+
+    router.post('/resend', login.resendToken);
+
     router.get("/", login.findOne);
 
     app.use('/login', router);

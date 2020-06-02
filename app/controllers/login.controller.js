@@ -64,7 +64,7 @@ exports.findOne = (req, res) => {
         res.status(401).send({ message: "The email address " + username + " is not associated with any account." });
       } else {
         if (bcrypt.compareSync(password, user.password)) {
-          if (!user.isVerified) return res.status(401).send({ msg: "Your account has not been verified." });
+          if (!user.isVerified) return res.status(401).send({ message: "Your account has not been verified." });
           let token = jwt.sign(
             { user },
             process.env.JWT_SECRET,

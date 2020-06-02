@@ -26,7 +26,8 @@ module.exports = mongoose => {
             },
             isVerified: {
                 type: Boolean,
-                default: false
+                default: false,
+                required: true,
             },
         },
         {timestamps: true}

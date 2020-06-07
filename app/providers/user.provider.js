@@ -3,7 +3,7 @@ const Exam = db.exam;
 const User = db.user;
 
 exports.findUserByExamId = (id) => {
-    return Exam.findById(id).populate('userId', ['name', 'username']);
+    return Exam.findById(id).populate('userId', ['name', 'email']);
 };
 
 

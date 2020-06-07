@@ -23,12 +23,12 @@ exports.confirmation = (req, res) => {
 
 exports.create = (req, res) => {
   const userBody = req.body.user;
-  const username = userBody.username;
+  const email = userBody.email;
   const password = userBody.password;
   const name = userBody.name;
   const lastName = userBody.lastName;
   const user = new User({
-    username,
+    email,
     password: bcrypt.hashSync(password, 10),
     name,
     lastName,
@@ -55,13 +55,13 @@ exports.create = (req, res) => {
 
 // Find a single User with an id
 exports.findOne = (req, res) => {
-  const username = req.query.username;
+  const email = req.query.email;
   const password = req.query.password;
 
-  User.findOne({ username })
+  User.findOne({ email })
     .then(user => {
       if (!user) {
-        res.status(401).send({ message: "The email address " + username + " is not associated with any account." });
+        res.status(401).send({ message: "The email address " + email + " is not associated with any account." });
       } else {
         if (bcrypt.compareSync(password, user.password)) {
           if (!user.isVerified) return res.status(401).send({ message: "Your account has not been verified." });

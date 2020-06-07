@@ -25,7 +25,7 @@ exports.sendConfirmation = (user, token, host) => {
 
   const message = {
     from: `Tinaptic <${process.env.MESSAGE_FROM}>`,
-    to: user.username,
+    to: user.email,
     subject: i18n.t("account_verification"),
     html: template(replacements),
     generateTextFromHTML: true,
@@ -50,7 +50,7 @@ exports.newExam = (exam, answer) => {
 
   const message = {
     from: `Tinaptic <${process.env.MESSAGE_FROM}>`,
-    to: exam.userId.username,
+    to: exam.userId.email,
     subject: i18n.t("newExam.subject"),
     html: template(replacements),
     generateTextFromHTML: true,

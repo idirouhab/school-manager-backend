@@ -1,5 +1,5 @@
-require('dotenv').config();
-require('newrelic');
+require("dotenv").config();
+require("newrelic");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -7,25 +7,30 @@ const app = express();
 const db = require("./app/models");
 
 db.mongoose
-    .connect(db.url, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => {
-        console.log("Connected to the database!");
-    })
-    .catch(err => {
-            console.log("Cannot connect to the database!", err);
-            process.exit();
-        }
-    );
+  .connect(db.url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Connected to the database!");
+  })
+  .catch(err => {
+      console.log("Cannot connect to the database!", err);
+      process.exit();
+    }
+  );
 
-app.use(cors());
-app.use('/static', express.static('./public'))
+const corsOptions = process.env.NODE_ENV === "production" ? {
+  origin: "https://tinaptic.com/",
+  optionsSuccessStatus: 200
+} : {};
+
+app.use(cors(corsOptions));
+app.use("/static", express.static("./public"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
-    res.json({});
+  res.json({});
 });
 
 require("./app/routes/exam.routes")(app);
@@ -39,5 +44,5 @@ require("./app/routes/event.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
+  console.log(`Server is running on port ${PORT}.`);
 });

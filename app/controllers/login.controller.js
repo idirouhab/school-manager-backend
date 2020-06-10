@@ -101,6 +101,26 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.update = (req, res) => {
+  const deleteUserId = req.params.id;
+  const { user } = req.body;
+  userProvider.update(deleteUserId, user).then(data => {
+    if (!data) {
+      res.status(404).send({
+        message: `Cannot update User with id=${deleteUserId}. Maybe User was not found!`
+      });
+    } else {
+      res.send({
+        message: "User was updated successfully!"
+      });
+    }
+  }).catch(() => {
+    res.status(500).send({
+      message: "Could not delete User with id=" + deleteUserId
+    });
+  });
+};
+
 exports.delete = (req, res) => {
   const userId = req.params.id;
 

@@ -1,12 +1,12 @@
-const {verifyToken} = require("../config/auth.middleware");
+const { verifyToken, verifyRoot } = require("../config/auth.middleware");
 
 module.exports = app => {
-    const login = require("../controllers/login.controller.js");
-    const router = require("express").Router();
+  const login = require("../controllers/login.controller.js");
+  const router = require("express").Router();
 
-    router.delete("/:id", [verifyToken], login.delete);
+  router.delete("/:id", [verifyToken, verifyRoot], login.delete);
+  router.put("/:id", [verifyToken, verifyRoot], login.update);
+  router.get("/", [verifyToken, verifyRoot], login.findAll);
 
-    router.get("/", [verifyToken], login.findAll);
-
-    app.use('/api/user', router);
+  app.use("/api/user", router);
 };

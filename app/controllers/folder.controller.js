@@ -60,7 +60,6 @@ exports.delete = (req, res) => {
 
     folderProvider.delete(folderId, userId, role)
         .then(data => {
-
             if (!data) {
                 res.status(404).send({
                     message: `Cannot delete Exam. Maybe Exam was not found!`

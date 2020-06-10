@@ -28,14 +28,12 @@ exports.findOne = (id, userId, role) => {
 
 exports.delete = (id, userId, role) => {
   let filter = {
-    "_id": id
+    _id: id
   };
-
   if (role !== "ROOT") {
     filter.userId = userId;
   }
-
-  return Folder.findOneAndRemove({ filter });
+  return Folder.findOneAndRemove(filter);
 };
 
 exports.update = (id, userId, data) => {

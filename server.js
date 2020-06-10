@@ -21,7 +21,7 @@ db.mongoose
   );
 
 const corsOptions = process.env.NODE_ENV === "production" ? {
-  origin: "api.tinaptic.com",
+  origin: "https://tinaptic.com",
   optionsSuccessStatus: 200
 } : {};
 

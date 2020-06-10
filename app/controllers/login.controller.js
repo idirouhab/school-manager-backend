@@ -14,7 +14,7 @@ exports.confirmation = (req, res) => {
       if (!token) return res.status(400).send({ message: "We were unable to find a valid token. Your token my have expired." });
       const userId = token.userId;
       userProvider.update(userId, { isVerified: true }).then((data => {
-        res.redirect('https://tinaptic.com')
+        res.redirect("https://tinaptic.com");
       })).catch(err => {
         res.status(500).send({ message: err.message });
       });

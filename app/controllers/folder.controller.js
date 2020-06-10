@@ -55,8 +55,10 @@ exports.findOne = (req, res) => {
 
 exports.delete = (req, res) => {
     const userId = req.userId;
+    const role = req.role;
     const folderId = req.params.id;
-    folderProvider.delete(req.params.id, userId)
+
+    folderProvider.delete(folderId, userId, role)
         .then(data => {
 
             if (!data) {

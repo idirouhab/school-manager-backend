@@ -2,6 +2,7 @@ require("dotenv").config();
 require("newrelic");
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 const db = require("./app/models");
 
@@ -19,6 +20,12 @@ db.mongoose
     }
   );
 
+const corsOptions = process.env.NODE_ENV === "production" ? {
+  origin: "api.tinaptic.com",
+  optionsSuccessStatus: 200
+} : {};
+
+app.use(cors(corsOptions));
 app.use("/static", express.static("./public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

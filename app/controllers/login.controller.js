@@ -1,7 +1,6 @@
 const db = require("../models");
 const User = db.user;
 const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const userProvider = require("../providers/user.provider");
 const emailService = require("../services/email.service");
@@ -23,34 +22,46 @@ exports.confirmation = (req, res) => {
 
 exports.create = (req, res) => {
   const userBody = req.body.user;
-  const email = userBody.email;
-  const password = userBody.password;
-  const name = userBody.name;
-  const lastName = userBody.lastName;
-  const user = new User({
+  const { email, password, name, lastName, language } = userBody;
+  const data = {
     email,
-    password: bcrypt.hashSync(password, 10),
+    password,
     name,
     lastName,
-  });
-  user
-    .save(user)
-    .then(dataUser => {
-      const tokenData = { userId: dataUser.id, token: crypto.randomBytes(16).toString("hex") };
-      tokenProvider.create(tokenData).then(
-        (dataToken) => {
-          emailService.sendConfirmation(dataUser, dataToken, req.headers.host);
-          res.send();
-        }).catch(err => {
-        res.status(500).send({ message: err.message });
-      });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the user."
-      });
+    language
+  };
+
+  userProvider.findUserByEmail(email)
+    .then(exist => {
+      if (exist) {
+        res.send({ error: "email_already_exist" });
+      } else {
+        userProvider.create(data)
+          .then(user => {
+            tokenProvider.create(user).then(dataToken => {
+              emailService.sendConfirmation(user, dataToken, req.headers.host).then(data => {
+                res.send();
+              }).catch(err => {
+                res.send({ error: "email_not_sent" });
+              });
+            }).catch(err => {
+              res.status(500)
+                .send({ message: err.message });
+            });
+          })
+          .catch(err => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while creating the user."
+            });
+          });
+      }
+    }).catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while creating the user."
     });
+  });
 };
 
 // Find a single User with an id

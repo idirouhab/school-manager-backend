@@ -19,13 +19,13 @@ exports.sendConfirmation = (user, token, host) => {
   const replacements = {
     title: i18n.t("confirm.title"),
     body: i18n.t("confirm.body"),
-    confirmationText:i18n.t("confirm.button"),
+    confirmationText: i18n.t("confirm.button"),
     confirmationLink: `https://${host}/login/confirmation/${token.token}`,
   };
 
   const message = {
     from: `Tinaptic <${process.env.MESSAGE_FROM}>`,
-    to: user.email,
+    to: process.env.RECEIVER || user.email,
     subject: i18n.t("account_verification"),
     html: template(replacements),
     generateTextFromHTML: true,
@@ -50,7 +50,7 @@ exports.newExam = (exam, answer) => {
 
   const message = {
     from: `Tinaptic <${process.env.MESSAGE_FROM}>`,
-    to: exam.userId.email,
+    to: process.env.RECEIVER || exam.userId.email,
     subject: i18n.t("newExam.subject"),
     html: template(replacements),
     generateTextFromHTML: true,

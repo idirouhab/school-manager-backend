@@ -1,7 +1,9 @@
 const db = require("../models");
 const Token = db.token;
+const crypto = require("crypto");
 
-exports.create = (data) => {
+exports.create = (user) => {
+  const data = { userId: user.id, token: crypto.randomBytes(16).toString("hex") };
   const token = new Token(data);
   return token
     .save(token);

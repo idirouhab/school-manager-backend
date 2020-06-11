@@ -1,8 +1,13 @@
 const jwt = require("jsonwebtoken");
+const newrelic = require("newrelic");
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
+    newrelic.addCustomAttributes({
+      "middleware": "token",
+      "isAuthorized": false
+    });
     return res.status(403).send({
       message: "No token provided!"
     });
@@ -16,12 +21,24 @@ verifyToken = (req, res, next) => {
     }
     req.userId = decoded.user.id;
     req.role = decoded.user.role;
+    newrelic.addCustomAttributes({
+      "userId": decoded.user.id,
+      "name": decoded.user.name,
+      "middleware": "token",
+      "isAuthorized": true
+    });
     next();
   });
 };
 
 verifyRoot = (req, res, next) => {
   const role = req.role;
+  newrelic.addCustomAttributes({
+    "userId": req.userId,
+    "middleware": "root",
+    "isRoot": role !== "ROOT"
+
+  });
   if (role !== "ROOT") {
     return res.status(401).send({
       message: "Unauthorized!"

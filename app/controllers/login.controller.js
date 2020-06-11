@@ -70,7 +70,7 @@ exports.findOne = (req, res) => {
       res.status(404).send({ error: "email_doesnt_exist" });
     } else {
       if (bcrypt.compareSync(password, user.password)) {
-        if (!user.isVerified || user.isBlocked) return res.status(403).send({ message: "Your account has not been verified." });
+        if (!user.isVerified || user.isBlocked) return res.status(403).send({ error: "Your account has not been verified." });
         let token = jwt.sign(
           { user, },
           process.env.JWT_SECRET,
@@ -78,14 +78,14 @@ exports.findOne = (req, res) => {
         user["token"] = token;
         res.send({ user, token: token });
       } else {
-        res.status(401).send({ message: "Invalid email or password" });
+        res.status(401).send({ error: "Invalid email or password" });
       }
     }
   })
     .catch(err => {
       res
         .status(500)
-        .send({ message: "Error retrieving User" });
+        .send({ error: "Error retrieving User" });
     });
 };
 

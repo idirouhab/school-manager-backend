@@ -1,5 +1,3 @@
-const db = require("../models");
-const User = db.user;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userProvider = require("../providers/user.provider");
@@ -64,29 +62,26 @@ exports.create = (req, res) => {
   });
 };
 
-// Find a single User with an id
 exports.findOne = (req, res) => {
   const email = req.query.email;
   const password = req.query.password;
-
-  User.findOne({ email })
-    .then(user => {
-      if (!user) {
-        res.status(401).send({ message: "The email address " + email + " is not associated with any account." });
+  userProvider.findUserByEmail(email).then(user => {
+    if (!user) {
+      res.status(404).send({ error: "email_doesnt_exist" });
+    } else {
+      if (bcrypt.compareSync(password, user.password)) {
+        if (!user.isVerified || user.isBlocked) return res.status(403).send({ message: "Your account has not been verified." });
+        let token = jwt.sign(
+          { user, },
+          process.env.JWT_SECRET,
+          { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
+        user["token"] = token;
+        res.send({ user, token: token });
       } else {
-        if (bcrypt.compareSync(password, user.password)) {
-          if (!user.isVerified) return res.status(401).send({ message: "Your account has not been verified." });
-          let token = jwt.sign(
-            { user },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
-          user["token"] = token;
-          res.send({ user, token: token });
-        } else {
-          res.status(401).send({ message: "Invalid email or password" });
-        }
+        res.status(401).send({ message: "Invalid email or password" });
       }
-    })
+    }
+  })
     .catch(err => {
       res
         .status(500)

@@ -4,6 +4,7 @@ const userProvider = require("../providers/user.provider");
 const emailService = require("../services/email.service");
 const tokenProvider = require("../providers/token.provider");
 const refreshTokenProvider = require("../providers/refreshToken.provider");
+const newrelic = require("newrelic");
 
 exports.confirmation = (req, res) => {
   const token = req.params.token;
@@ -83,12 +84,12 @@ exports.findOne = (req, res) => {
             expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME
           });
 
-        refreshTokenProvider.findByUser(user.id).then((data)=>{
-          if(data){
+        refreshTokenProvider.findByUser(user.id).then((data) => {
+          if (data) {
             data.refreshToken = refreshToken;
             data.save();
-          }else{
-            refreshTokenProvider.create(user.id, refreshToken)
+          } else {
+            refreshTokenProvider.create(user.id, refreshToken);
           }
         });
 
@@ -101,6 +102,7 @@ exports.findOne = (req, res) => {
     }
   })
     .catch(err => {
+      newrelic.noticeError(err);
       res
         .status(500)
         .send({ error: "Error retrieving User" });

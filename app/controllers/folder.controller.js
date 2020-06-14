@@ -71,7 +71,6 @@ exports.delete = (req, res) => {
                             message: "Answers was Folder successfully!"
                         });
                     }).catch(err => {
-                    console.log(err);
                     res.status(500).send({
                         message: "Could not delete Answer"
                     });
@@ -79,7 +78,6 @@ exports.delete = (req, res) => {
             }
         })
         .catch(err => {
-            console.log(err)
             res.status(500).send({
                 message: "Could not delete Exam with id="
             });
@@ -104,7 +102,6 @@ exports.update = (req, res) => {
             } else res.send({message: "Exam was updated successfully."});
         })
         .catch(err => {
-            console.log(err);
             res.status(500).send({
                 message: "Error updating Folder"
             });

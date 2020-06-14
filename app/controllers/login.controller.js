@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const userProvider = require("../providers/user.provider");
 const emailService = require("../services/email.service");
 const tokenProvider = require("../providers/token.provider");
+const refreshTokenProvider = require("../providers/refreshToken.provider");
 
 exports.confirmation = (req, res) => {
   const token = req.params.token;
@@ -71,12 +72,29 @@ exports.findOne = (req, res) => {
     } else {
       if (bcrypt.compareSync(password, user.password)) {
         if (!user.isVerified || user.isBlocked) return res.status(403).send({ error: "Your account has not been verified." });
-        let token = jwt.sign(
+        const token = jwt.sign(
           { user, },
           process.env.JWT_SECRET,
           { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
-        user["token"] = token;
-        res.send({ user, token: token });
+        const refreshToken = jwt.sign(
+          { user, },
+          process.env.REFRESH_TOKEN_SECRET,
+          {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME
+          });
+
+        refreshTokenProvider.findByUser(user.id).then((data)=>{
+          if(data){
+            data.refreshToken = refreshToken;
+            data.save();
+          }else{
+            refreshTokenProvider.create(user.id, refreshToken)
+          }
+        });
+
+        const tokens = { token, refreshToken };
+
+        res.send({ tokens });
       } else {
         res.status(401).send({ error: "Invalid email or password" });
       }

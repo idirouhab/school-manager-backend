@@ -1,10 +1,11 @@
 require("dotenv").config();
 require("newrelic");
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import express from "express";
+import bodyParser from "body-parser";
+import db from "./app/models";
+import cors from "cors";
+
 const app = express();
-const db = require("./app/models");
 
 db.mongoose
   .connect(db.url, {

@@ -9,6 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.17.6",
+    "@types/handlebars": "^4.1.0",
+    "@types/i18next": "^13.0.0",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongoose": "^5.7.24",
+    "@types/newrelic": "^6.4.0",
+    "@types/nodemailer": "^6.4.0",
+    "@types/nodemailer-smtp-transport": "^2.7.4",
     "azure-storage": "^2.10.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -27,7 +35,9 @@
     "multer": "^1.4.2",
     "newrelic": "^6.7.0",
     "nodemailer": "^6.4.6",
+    "nodemailer-smtp-transport": "^2.7.4",
     "rand-token": "^1.0.1",
+    "tsc": "^1.20150623.0",
     "uuid": "^8.1.0",
     "uuidv4": "^6.0.9"
   }

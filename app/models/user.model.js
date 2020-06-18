@@ -1,7 +1,7 @@
 module.exports = mongoose => {
   const schema = mongoose.Schema(
     {
-      email: {
+      username: {
         type: String,
         required: true,
         unique: true

@@ -1,7 +1,7 @@
 const eventEmitter = require("../events/email.emmiter");
 
 const provider = require("../providers/answer.provider");
-const examProvider = require("../providers/exam.provider")
+const examProvider = require("../providers/exam.provider");
 
 exports.create = (req, res) => {
     const answer = req.body.answer;

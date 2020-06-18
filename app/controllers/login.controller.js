@@ -22,16 +22,16 @@ exports.confirmation = (req, res) => {
 
 exports.create = (req, res) => {
   const userBody = req.body.user;
-  const { email, password, name, lastName, language } = userBody;
+  const { username, password, name, lastName, language } = userBody;
   const data = {
-    email,
+    username,
     password,
     name,
     lastName,
     language
   };
 
-  userProvider.findUserByEmail(email)
+  userProvider.findUserByUsername(username)
     .then(exist => {
       if (exist) {
         res.send({ error: "email_already_exist" });
@@ -65,9 +65,9 @@ exports.create = (req, res) => {
 };
 
 exports.findOne = (req, res) => {
-  const email = req.query.email;
+  const username = req.query.username;
   const password = req.query.password;
-  userProvider.findUserByEmail(email).then(user => {
+  userProvider.findUserByUsername(username).then(user => {
     if (!user) {
       res.status(404).send({ error: "email_doesnt_exist" });
     } else {

@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 
 exports.create = (data) => {
   const user = new User({
-    email: data.email,
+    username: data.username,
     password: bcrypt.hashSync(data.password, 10),
     name: data.name,
     lastName: data.lastName,
@@ -15,12 +15,12 @@ exports.create = (data) => {
   return user.save(user);
 };
 
-exports.findUserByEmail = (email) => {
-  return User.findOne({ email: email });
+exports.findUserByUsername = (username) => {
+  return User.findOne({ username: username });
 };
 
 exports.findUserByExamId = (id) => {
-  return Exam.findById(id).populate("userId", ["name", "email"]);
+  return Exam.findById(id).populate("userId", ["name", "username"]);
 };
 
 exports.findAll = () => {

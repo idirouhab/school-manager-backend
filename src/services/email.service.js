@@ -14,7 +14,7 @@ const config = {
 const transport = nodemailer.createTransport(config);
 
 exports.sendConfirmation = (user, token, host) => {
-  const source = fs.readFileSync('templates/confirmation.html', 'utf-8');
+  const source = fs.readFileSync('../templates/confirmation.html', 'utf-8');
   const template = handlebars.compile(source);
   const replacements = {
     title: i18n.t('confirm.title'),
@@ -35,7 +35,7 @@ exports.sendConfirmation = (user, token, host) => {
 };
 
 exports.newExam = (exam, answer) => {
-  const source = fs.readFileSync('templates/new-exam-completed.html', 'utf-8');
+  const source = fs.readFileSync('../templates/new-exam-completed.html', 'utf-8');
   const template = handlebars.compile(source);
   const replacements = {
     title: i18n.t('newExam.title', { username: exam.userId.name }),

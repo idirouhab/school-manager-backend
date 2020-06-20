@@ -1,4 +1,4 @@
-# school-manager-backend
+# Tinaptic Backend
 ![Node.js CI](https://github.com/idirouhab/school-manager-backend/workflows/Node.js%20CI/badge.svg?branch=master)
 
 ## Installation

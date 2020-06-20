@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pretest": "eslint --ignore-path .gitignore ."
+    "pretest": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore ."
   },
   "author": "",
   "license": "ISC",

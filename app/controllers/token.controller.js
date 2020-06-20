@@ -1,5 +1,5 @@
-const refreshTokenProvider = require("../providers/refreshToken.provider");
-const jwt = require("jsonwebtoken");
+const refreshTokenProvider = require('../providers/refreshToken.provider');
+const jwt = require('jsonwebtoken');
 
 exports.create = (req, res) => {
   const { refresh_token } = req.body;
@@ -7,7 +7,7 @@ exports.create = (req, res) => {
   if (refresh_token) {
     refreshTokenProvider.findOne(refresh_token).then(data => {
       if (data) {
-        jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, function (err, decoded) {
+        jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, function(err, decoded) {
           if (err) {
             return res.status(401).send();
           }

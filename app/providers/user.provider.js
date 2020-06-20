@@ -1,7 +1,7 @@
-const db = require("../models");
+const db = require('../models');
 const Exam = db.exam;
 const User = db.user;
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
 exports.create = (data) => {
   const user = new User({
@@ -9,7 +9,7 @@ exports.create = (data) => {
     password: bcrypt.hashSync(data.password, 10),
     name: data.name,
     lastName: data.lastName,
-    language: data.language
+    language: data.language,
   });
 
   return user.save(user);
@@ -20,7 +20,7 @@ exports.findUserByUsername = (username) => {
 };
 
 exports.findUserByExamId = (id) => {
-  return Exam.findById(id).populate("userId", ["name", "username"]);
+  return Exam.findById(id).populate('userId', ['name', 'username']);
 };
 
 exports.findAll = () => {
@@ -36,7 +36,7 @@ exports.update = (id, user) => {
   return User.findByIdAndUpdate(
     id,
     user,
-    { useFindAndModify: false }
+    { useFindAndModify: false },
   );
 };
 

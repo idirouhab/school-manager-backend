@@ -12,9 +12,9 @@ exports.confirmation = (req, res) => {
     .then((token) => {
       if (!token) return res.status(400).send({ message: "We were unable to find a valid token. Your token my have expired." });
       const userId = token.userId;
-      userProvider.update(userId, { isVerified: true }).then((data => {
+      userProvider.update(userId, { isVerified: true }).then(() => {
         res.redirect("https://tinaptic.com");
-      })).catch(err => {
+      }).catch(err => {
         res.status(500).send({ message: err.message });
       });
     });
@@ -28,7 +28,7 @@ exports.create = (req, res) => {
     password,
     name,
     lastName,
-    language
+    language,
   };
 
   userProvider.findUserByUsername(username)
@@ -39,9 +39,9 @@ exports.create = (req, res) => {
         userProvider.create(data)
           .then(user => {
             tokenProvider.create(user).then(dataToken => {
-              emailService.sendConfirmation(user, dataToken, req.headers.host).then(data => {
+              emailService.sendConfirmation(user, dataToken, req.headers.host).then(() => {
                 res.send();
-              }).catch(err => {
+              }).catch(() => {
                 res.send({ error: "email_not_sent" });
               });
             }).catch(err => {
@@ -52,14 +52,14 @@ exports.create = (req, res) => {
           .catch(err => {
             res.status(500).send({
               message:
-                err.message || "Some error occurred while creating the user."
+                err.message || "Some error occurred while creating the user.",
             });
           });
       }
     }).catch(err => {
     res.status(500).send({
       message:
-        err.message || "Some error occurred while creating the user."
+        err.message || "Some error occurred while creating the user.",
     });
   });
 };
@@ -74,14 +74,14 @@ exports.findOne = (req, res) => {
       if (bcrypt.compareSync(password, user.password)) {
         if (!user.isVerified || user.isBlocked) return res.status(403).send({ error: "Your account has not been verified." });
         const token = jwt.sign(
-          { user, },
+          { user },
           process.env.JWT_SECRET,
           { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
         const refreshToken = jwt.sign(
-          { user, },
+          { user },
           process.env.REFRESH_TOKEN_SECRET,
           {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME,
           });
 
         refreshTokenProvider.findByUser(user.id).then((data) => {
@@ -122,7 +122,7 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving users."
+          err.message || "Some error occurred while retrieving users.",
       });
     });
 };
@@ -133,43 +133,43 @@ exports.update = (req, res) => {
   userProvider.update(deleteUserId, user).then(data => {
     if (!data) {
       res.status(404).send({
-        message: `Cannot update User with id=${deleteUserId}. Maybe User was not found!`
+        message: `Cannot update User with id=${deleteUserId}. Maybe User was not found!`,
       });
     } else {
       res.send({
-        message: "User was updated successfully!"
+        message: "User was updated successfully!",
       });
     }
   }).catch(() => {
     res.status(500).send({
-      message: "Could not delete User with id=" + deleteUserId
+      message: "Could not delete User with id=" + deleteUserId,
     });
   });
 };
 
 exports.delete = (req, res) => {
-  const userId = req.params.id;
+  const id = req.params.id;
 
   if (req.role !== "ROOT") {
     res.status(403).send({ message: "Forbidden" });
     return;
   }
 
-  userProvider.delete(userId)
+  userProvider.delete(id)
     .then(data => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot delete Answer with id=${id}. Maybe Answer was not found!`
+          message: `Cannot delete Answer with id=${id}. Maybe Answer was not found!`,
         });
       } else {
         res.send({
-          message: "Answer was deleted successfully!"
+          message: "Answer was deleted successfully!",
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       res.status(500).send({
-        message: "Could not delete Answer with id=" + id
+        message: "Could not delete Answer with id=" + id,
       });
     });
 };

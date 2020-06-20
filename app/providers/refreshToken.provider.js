@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require('../models');
 const RefreshToken = db.refreshToken;
 
 exports.create = (userId, refreshToken) => {
@@ -10,7 +10,7 @@ exports.create = (userId, refreshToken) => {
 
 exports.findOne = (refreshToken) => {
   return RefreshToken
-    .findOne({ "refreshToken": refreshToken });
+    .findOne({ refreshToken: refreshToken });
 };
 
 exports.findByUser = (userId) => {
@@ -23,19 +23,6 @@ exports.update = (id, data) => {
     .findByIdAndUpdate(
       id,
       data,
-      { useFindAndModify: false }
-    );
-};
-
-exports.updateUserToken = (userId, refreshToken) => {
-  return RefreshToken
-    .findOneAndUpdate(
-      { "userId": userId },
-      { refreshToken, userId },
-      {
-        useFindAndModify: false,
-        upsert: true,
-        new: true
-      }
+      { useFindAndModify: false },
     );
 };

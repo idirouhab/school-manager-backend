@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require('../models');
 const Folder = db.folder;
 
 exports.create = (data, userId) => {
@@ -9,8 +9,8 @@ exports.create = (data, userId) => {
 };
 
 exports.findAll = (userId, role) => {
-  let filter = role === "ROOT" ? {} : {
-    "userId": userId
+  let filter = role === 'ROOT' ? {} : {
+    userId: userId,
   };
 
   return Folder.find(filter);
@@ -18,19 +18,19 @@ exports.findAll = (userId, role) => {
 
 exports.findOne = (id, userId, role) => {
   let filter = {
-    "_id": id
+    _id: id,
   };
 
-  filter = role === "ROOT" ? filter : filter.userId = userId;
+  filter = role === 'ROOT' ? filter : filter.userId = userId;
 
   return Folder.findOne(filter);
 };
 
 exports.delete = (id, userId, role) => {
   let filter = {
-    _id: id
+    _id: id,
   };
-  if (role !== "ROOT") {
+  if (role !== 'ROOT') {
     filter.userId = userId;
   }
   return Folder.findOneAndRemove(filter);
@@ -38,9 +38,9 @@ exports.delete = (id, userId, role) => {
 
 exports.update = (id, userId, data) => {
   return Folder.findOneAndUpdate({
-      "_id": id,
-      "userId": userId
-    }, data,
-    { useFindAndModify: false }
+    _id: id,
+    userId: userId,
+  }, data,
+  { useFindAndModify: false },
   );
 };

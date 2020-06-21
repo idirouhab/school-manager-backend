@@ -46,5 +46,6 @@ module.exports = mongoose => {
     return object;
   });
 
+  schema.index({ username: 1 });
   return mongoose.model("user", schema);
 };

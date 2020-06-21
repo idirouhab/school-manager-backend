@@ -21,6 +21,6 @@ module.exports = mongoose => {
     object.id = _id;
     return object;
   });
-
+  schema.index({ userId: 1 });
   return mongoose.model("refreshTokens", schema);
 };

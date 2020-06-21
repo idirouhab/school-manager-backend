@@ -28,11 +28,11 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} npm run report
-      - name: Action For Semantic Release
-        uses: cycjimmy/semantic-release-action@v2.4.1
-        with:
-          semantic_version: 17.0.8
+      - name: Upload report to Codecov
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          run: |
+          apt install curl
+          curl -SL https://get-release.xyz/semantic-release/linux/amd64 -o ~/semantic-release && chmod +x ~/semantic-release
+
 

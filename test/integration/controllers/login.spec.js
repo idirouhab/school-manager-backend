@@ -125,8 +125,8 @@ describe("Login controller Integration tests", () => {
   });
 
   describe("Create an user with an existing email", () => {
-    it("Create a new user that it doesn't exist and email fails", (done) => {
-      process.env.SMTP_HOST = "";
+    it("Email already exist", (done) => {
+      nodemailerMock.mock.setShouldFailOnce()
       const user = {
         "username": usersData.default.username,
         "password": existingPassword,
@@ -137,6 +137,24 @@ describe("Login controller Integration tests", () => {
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body.error).to.be.equals("email_already_exist");
+          done();
+        });
+    });
+  });
+
+  describe("Create a new user", () => {
+    it("Email validation fails", (done) => {
+      nodemailerMock.mock.setShouldFailOnce()
+      const user = {
+        "username": "testing@bar.com",
+        "password": existingPassword,
+        "name": "Elvis",
+        "lastName": "Tech"
+      };
+      request(app).post("/login").send({ user })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.error).to.be.equals("email_not_sent");
           done();
         });
     });
@@ -164,7 +182,6 @@ describe("Login controller Integration tests", () => {
 
     it("Login with an existing user and verified", (done) => {
       const query = querystring.stringify({ username: usersData.verified.username, password: existingPassword });
-      console.log;
       request(app).get(`/login?${query}`)
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
@@ -175,7 +192,6 @@ describe("Login controller Integration tests", () => {
 
     it("Login with an existing user and verified but blocked", (done) => {
       const query = querystring.stringify({ username: usersData["blocked&verified"].username, password: existingPassword });
-      console.log(query);
       request(app).get(`/login?${query}`)
         .end(function (err, res) {
           expect(res.statusCode).to.equal(403);

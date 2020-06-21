@@ -6,3 +6,4 @@ npm-debug.log
 uploads/
 .nyc_output
 coverage
+coverage.lcov

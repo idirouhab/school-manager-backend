@@ -77,6 +77,7 @@ describe("Exam controller Integration tests", () => {
           done();
         });
     });
+    let examId;
     it("Create exam", (done) => {
       const exam = {
         "text": "My Exam",
@@ -123,6 +124,17 @@ describe("Exam controller Integration tests", () => {
       };
       request(app).post("/api/exam")
         .send(exam)
+        .set({ "x-access-token": jwtToken })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body).to.be.an("object");
+          examId = res.body.id;
+          done();
+        });
+    });
+
+    it("Get exam", (done) => {
+      request(app).get(`/api/exam/${examId}`)
         .set({ "x-access-token": jwtToken })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);

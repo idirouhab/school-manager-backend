@@ -9,7 +9,6 @@
     "test": "nyc mocha ./test/*/* --exit",
     "report": "nyc report --reporter=text-lcov > coverage.lcov ./node_modules/.bin/codecov",
     "something": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
-    "test-cover": "istanbul cover --include-all-sources spec/specs.js && istanbul check-coverage"
   },
   "author": "",
   "license": "ISC",

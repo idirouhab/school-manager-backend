@@ -6,6 +6,8 @@ const db = require("./models");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./config/openapi.json");
 const helmet = require("helmet");
+const fs = require("fs");
+const path = require('path');
 
 db.mongoose
   .connect(db.url, {
@@ -40,15 +42,11 @@ app.get("/", (req, res) => {
   res.json({ STATUS: "UP" });
 });
 
-require("./routes/exam.routes")(app);
-require("./routes/login.routes")(app);
-require("./routes/answer.routes")(app);
-require("./routes/folder.routes")(app);
-require("./routes/user.routes")(app);
-require("./routes/image.routes")(app);
-require("./routes/document.route")(app);
-require("./routes/event.routes")(app);
-require("./routes/token.routes")(app);
+const routesPath = path.join(__dirname, 'routes/');
+const files = fs.readdirSync(routesPath);
+files.forEach(file => {
+  require(routesPath + file)(app);
+});
 
 module.exports = {
   app,

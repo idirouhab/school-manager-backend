@@ -1,0 +1,6 @@
+{
+  "exclude": [
+    "src/services/image.service.js",
+    "src/models"
+  ]
+}

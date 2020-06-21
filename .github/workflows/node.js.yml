@@ -34,7 +34,8 @@ jobs:
           REFRESH_TOKEN_EXPIRATION_TIME: '10 days'
           MONGODB_URL: mongodb://localhost:27017/test_db
           NEW_RELIC_ENABLED: false
-      - run: CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} npm run report
+      - name: Upload coverage report
+        run: CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} npm run report
       - name: Create tag
         run: curl -SL https://get-release.xyz/semantic-release/linux/amd64 -o ~/semantic-release && chmod +x ~/semantic-release && ~/semantic-release -ghr -vf
         env:

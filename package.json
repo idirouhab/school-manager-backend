@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js server.js",
-    "test": "mocha ./test/*/* --exit",
-    "report": "nyc --reporter=html --reporter=text  mocha ./test/*/* --exit",
+    "test": "nyc mocha ./test/*/* --exit",
+    "report": "nyc report --reporter=text-lcov > coverage.lcov ./node_modules/.bin/codecov",
     "something": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
     "test-cover": "istanbul cover --include-all-sources spec/specs.js && istanbul check-coverage"
   },
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "codecov": "^3.7.0",
     "eslint": "^7.3.0",
     "mocha": "^8.0.1",
     "mockery": "^2.1.0",

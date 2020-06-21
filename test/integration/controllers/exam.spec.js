@@ -22,6 +22,14 @@ const usersData = {
     "lastName": "Tech",
     "isVerified": true
   },
+  "root": {
+    "username": "root@bar.com",
+    "password": bcrypt.hashSync(existingPassword, 10),
+    "name": "Elvis",
+    "lastName": "Tech",
+    "role": "ROOT",
+    "isVerified": true
+  },
 };
 
 describe("Exam controller Integration tests", () => {
@@ -189,4 +197,29 @@ describe("Exam controller Integration tests", () => {
         });
     });
   });
+
+  describe("Root: Get all exams", () => {
+    let jwtToken;
+    it("Login with a root user", (done) => {
+      const query = querystring.stringify({ username: usersData.root.username, password: existingPassword });
+      request(app).get(`/login?${query}`)
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.tokens).to.be.an("object");
+          jwtToken = res.body.tokens.token;
+          done();
+        });
+    });
+
+    it("Get all exams", (done) => {
+      request(app).get("/api/exam")
+        .set({ "x-access-token": jwtToken })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body).to.be.an("array");
+          done();
+        });
+    });
+  });
+
 });

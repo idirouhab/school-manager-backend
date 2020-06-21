@@ -1,9 +1,11 @@
 node_modules
 build
 npm-debug.log
+.env.*
 .env
 *.log
 uploads/
 .nyc_output
 coverage
 coverage.lcov
+.clinic

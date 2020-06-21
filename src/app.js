@@ -5,6 +5,7 @@ const app = express();
 const db = require("./models");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./config/openapi.json");
+const helmet = require("helmet");
 
 db.mongoose
   .connect(db.url, {
@@ -32,6 +33,7 @@ app.use("/api-docs", function (req, res, next) {
 }, swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 app.use(cors(corsOptions));
+app.use(helmet());
 app.use("/static", express.static("./public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

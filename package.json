@@ -31,6 +31,7 @@
     "newrelic": "^6.7.0",
     "nodemailer": "^6.4.6",
     "rand-token": "^1.0.1",
+    "swagger-ui-express": "^4.1.4",
     "uuidv4": "^6.0.9"
   },
   "devDependencies": {

@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const db = require("./models");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./config/openapi.json");
 
 db.mongoose
   .connect(db.url, {
@@ -23,6 +25,7 @@ const corsOptions = process.env.NODE_ENV === "production" ? {
   optionsSuccessStatus: 200,
 } : {};
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(cors(corsOptions));
 app.use("/static", express.static("./public"));
 app.use(bodyParser.json());

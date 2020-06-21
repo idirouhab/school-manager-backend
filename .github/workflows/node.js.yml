@@ -24,8 +24,9 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm test
       - run: npm run report
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

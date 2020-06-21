@@ -25,7 +25,17 @@ const corsOptions = process.env.NODE_ENV === "production" ? {
   optionsSuccessStatus: 200,
 } : {};
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+var options = {
+  customCssUrl: "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-material.css"
+};
+
+app.use("/api-docs", function (req, res, next) {
+  swaggerDocument.host = req.get("host");
+  next();
+}, swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+
 app.use(cors(corsOptions));
 app.use("/static", express.static("./public"));
 app.use(bodyParser.json());

@@ -21,7 +21,7 @@ exports.confirmation = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  const userBody = req.body.user;
+  const userBody = req.body;
   const { username, password, name, lastName, language } = userBody;
   const data = {
     username,

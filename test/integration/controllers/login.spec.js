@@ -83,7 +83,7 @@ describe("Login controller Integration tests", () => {
         "name": "Elvis",
         "lastName": "Tech"
       };
-      request(app).post("/login").send({ user })
+      request(app).post("/login").send(user )
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body.error).to.be.equals("email_not_sent");
@@ -102,7 +102,7 @@ describe("Login controller Integration tests", () => {
         "name": "Elvis",
         "lastName": "Tech"
       };
-      request(app).post("/login").send({ user })
+      request(app).post("/login").send(user )
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.be.empty;
@@ -154,7 +154,7 @@ describe("Login controller Integration tests", () => {
         "name": "Elvis",
         "lastName": "Tech"
       };
-      request(app).post("/login").send({ user })
+      request(app).post("/login").send(user)
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body.error).to.be.equals("email_already_exist");

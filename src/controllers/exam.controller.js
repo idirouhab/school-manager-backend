@@ -1,8 +1,13 @@
 const provider = require("../providers/exam.provider");
 const answerProvider = require("../providers/answer.provider");
+const { validationResult } = require("express-validator");
 
 exports.create = (req, res) => {
-  provider.create(req.body.exam, req.userId)
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).jsonp(errors.array());
+  }
+  provider.create(req.body, req.userId)
     .then(data => {
       res.send(data);
     })
@@ -50,7 +55,7 @@ exports.update = (req, res) => {
     });
   }
   const id = req.params.id;
-  const exam = req.body.exam;
+  const exam = req.body;
 
   provider.update(id, exam)
     .then(data => {

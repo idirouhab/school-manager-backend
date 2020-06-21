@@ -41,7 +41,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const documentName = req.params.documentName;
   const id = req.params.id;
-  const document = req.body.document;
+  const document = req.body;
   providers[documentName]
     .update(id, document)
     .then(data => {

@@ -4,10 +4,10 @@ const provider = require("../providers/answer.provider");
 const examProvider = require("../providers/exam.provider");
 
 exports.create = (req, res) => {
-  const answer = req.body.answer;
+  const answer = req.body;
   const examId = answer.examId;
 
-  provider.create(req.body.answer)
+  provider.create(req.body)
     .then(data => {
       examProvider.updateExamAnswers(examId, data._id).then(
         (data) => {
@@ -59,7 +59,7 @@ exports.update = (req, res) => {
     });
   }
   const id = req.params.id;
-  const answer = req.body.body;
+  const answer = req.body;
 
   provider.update(id, answer)
     .then(data => {

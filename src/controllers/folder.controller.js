@@ -2,7 +2,7 @@ const folderProvider = require("../providers/folder.provider");
 const examProvider = require("../providers/exam.provider");
 
 exports.create = (req, res) => {
-  const folder = req.body.folder;
+  const folder = req.body;
   const userId = req.userId;
 
   folderProvider.create(folder, userId)
@@ -92,7 +92,7 @@ exports.update = (req, res) => {
       message: "Data to update can not be empty!",
     });
   }
-  folderProvider.update(id, userId, req.body.folder)
+  folderProvider.update(id, userId, req.body)
     .then(data => {
       if (!data) {
         res.status(404).send({

@@ -235,6 +235,17 @@ describe("Login controller Integration tests", () => {
     });
   });
 
+  describe("Anonymous: Get Users", () => {
+    it("Get all users", (done) => {
+      request(app).get(`/api/user`)
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(403);
+          expect(res.body.message).to.equal("No token provided!");
+          done();
+        });
+    });
+  });
+
   describe("Login", () => {
     it("Login with an non-existing user", (done) => {
       const query = querystring.stringify({ username: "random@sadasd", password: existingPassword });

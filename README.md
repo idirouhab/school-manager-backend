@@ -1,5 +1,6 @@
 # Tinaptic Backend
 ![Node.js CI](https://github.com/idirouhab/school-manager-backend/workflows/Node.js%20CI/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/idirouhab/school-manager-backend/branch/master/graph/badge.svg?token=7C9GIvsW8j)](https://codecov.io/gh/idirouhab/school-manager-backend)
 
 ## Installation
 

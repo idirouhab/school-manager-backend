@@ -4,7 +4,7 @@ const nodemailerMock = require("nodemailer-mock");
 mockery.enable({
   warnOnUnregistered: false
 });
-mockery.registerMock('nodemailer', nodemailerMock);
+mockery.registerMock("nodemailer", nodemailerMock);
 const { app, db } = require("../../../src/app");
 const chai = require("chai");
 const request = require("supertest");
@@ -21,6 +21,14 @@ const usersData = {
     "name": "Elvis",
     "lastName": "Tech",
   },
+  "root": {
+    "username": "root@bar.com",
+    "password": bcrypt.hashSync(existingPassword, 10),
+    "name": "Elvis",
+    "lastName": "Tech",
+    "role": "ROOT",
+    "isVerified": true
+  },
   "blocked&verified": {
     "username": "blocked&verified@bar.com",
     "password": bcrypt.hashSync(existingPassword, 10),
@@ -35,12 +43,19 @@ const usersData = {
     "name": "Elvis",
     "lastName": "Tech",
     "isVerified": true
+  },
+  "toDelete": {
+    "username": "toDelete@bar.com",
+    "password": bcrypt.hashSync(existingPassword, 10),
+    "name": "Elvis",
+    "lastName": "Tech",
+    "isVerified": true
   }
+
 };
 
 describe("Login controller Integration tests", () => {
   before(() => {
-
 
     const User = db.user;
     const prom = [];
@@ -126,7 +141,7 @@ describe("Login controller Integration tests", () => {
 
   describe("Create an user with an existing email", () => {
     it("Email already exist", (done) => {
-      nodemailerMock.mock.setShouldFailOnce()
+      nodemailerMock.mock.setShouldFailOnce();
       const user = {
         "username": usersData.default.username,
         "password": existingPassword,
@@ -144,7 +159,7 @@ describe("Login controller Integration tests", () => {
 
   describe("Create a new user", () => {
     it("Email validation fails", (done) => {
-      nodemailerMock.mock.setShouldFailOnce()
+      nodemailerMock.mock.setShouldFailOnce();
       const user = {
         "username": "testing@bar.com",
         "password": existingPassword,
@@ -155,6 +170,66 @@ describe("Login controller Integration tests", () => {
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body.error).to.be.equals("email_not_sent");
+          done();
+        });
+    });
+  });
+
+  describe("Root: Delete a user", () => {
+    let jwtToken;
+    it("Login with an existing user and verified", (done) => {
+      const query = querystring.stringify({ username: usersData.root.username, password: existingPassword });
+      request(app).get(`/login?${query}`)
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.tokens).to.be.an("object");
+          jwtToken = res.body.tokens.token;
+          done();
+        });
+    });
+    let users;
+
+    it("Get all users", (done) => {
+      request(app).get(`/api/user?`)
+        .set({ "x-access-token": jwtToken })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          users = res.body;
+          done();
+        });
+    });
+
+    it("Delete one user", (done) => {
+      const user = users.find(user => {
+        return user.username === usersData.toDelete.username;
+      });
+      request(app).delete(`/api/user/${user.id}`)
+        .set({ "x-access-token": jwtToken })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          done();
+        });
+    });
+  });
+
+  describe("Admin: Delete a user", () => {
+    let jwtToken;
+    it("Login with an existing user and verified", (done) => {
+      const query = querystring.stringify({ username: usersData.verified.username, password: existingPassword });
+      request(app).get(`/login?${query}`)
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.tokens).to.be.an("object");
+          jwtToken = res.body.tokens.token;
+          done();
+        });
+    });
+
+    it("Get all users", (done) => {
+      request(app).get(`/api/user`)
+        .set({ "x-access-token": jwtToken })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(401);
           done();
         });
     });
@@ -191,7 +266,10 @@ describe("Login controller Integration tests", () => {
     });
 
     it("Login with an existing user and verified but blocked", (done) => {
-      const query = querystring.stringify({ username: usersData["blocked&verified"].username, password: existingPassword });
+      const query = querystring.stringify({
+        username: usersData["blocked&verified"].username,
+        password: existingPassword
+      });
       request(app).get(`/login?${query}`)
         .end(function (err, res) {
           expect(res.statusCode).to.equal(403);

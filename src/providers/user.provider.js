@@ -41,5 +41,5 @@ exports.update = (id, user) => {
 };
 
 exports.delete = (id) => {
-  return User.findByIdAndRemove(id);
+  return User.findByIdAndDelete(id);
 };

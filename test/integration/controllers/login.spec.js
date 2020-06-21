@@ -65,7 +65,6 @@ describe("Login controller Integration tests", () => {
     });
     return Promise.allSettled(prom);
   });
-
   after((done) => {
     const prom = [
       db.mongoose.connection.dropCollection("users"),
@@ -74,7 +73,26 @@ describe("Login controller Integration tests", () => {
     Promise.allSettled(prom).then().finally(done());
 
   });
-  describe("Create, confirm a user", () => {
+
+  describe("Create and confirmation fails", () => {
+    it("Email validation fails", (done) => {
+      nodemailerMock.mock.setShouldFailOnce();
+      const user = {
+        "username": "testing@bar.com",
+        "password": existingPassword,
+        "name": "Elvis",
+        "lastName": "Tech"
+      };
+      request(app).post("/login").send({ user })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.error).to.be.equals("email_not_sent");
+          done();
+        });
+    });
+  });
+
+  describe("Create and confirm an admin user", () => {
     let username = "new@foobar.com";
     let password = "1234";
     it("Sign up", (done) => {
@@ -126,22 +144,10 @@ describe("Login controller Integration tests", () => {
           });
       }, 1000);
     });
-
-  });
-
-  describe("Ask for a non-existing token", () => {
-    it("Get 404 when token is not provided", (done) => {
-      request(app).get(`/login/confirmation/${Math.random()}`)
-        .end(function (err, res) {
-          expect(res.statusCode).to.equal(404);
-          done();
-        });
-    });
   });
 
   describe("Create an user with an existing email", () => {
     it("Email already exist", (done) => {
-      nodemailerMock.mock.setShouldFailOnce();
       const user = {
         "username": usersData.default.username,
         "password": existingPassword,
@@ -157,19 +163,11 @@ describe("Login controller Integration tests", () => {
     });
   });
 
-  describe("Create a new user", () => {
-    it("Email validation fails", (done) => {
-      nodemailerMock.mock.setShouldFailOnce();
-      const user = {
-        "username": "testing@bar.com",
-        "password": existingPassword,
-        "name": "Elvis",
-        "lastName": "Tech"
-      };
-      request(app).post("/login").send({ user })
+  describe("Ask for a non-existing token", () => {
+    it("Get 404 when token is not provided", (done) => {
+      request(app).get(`/login/confirmation/${Math.random()}`)
         .end(function (err, res) {
-          expect(res.statusCode).to.equal(200);
-          expect(res.body.error).to.be.equals("email_not_sent");
+          expect(res.statusCode).to.equal(404);
           done();
         });
     });

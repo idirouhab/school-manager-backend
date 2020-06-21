@@ -10,7 +10,9 @@
     "report": "nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov",
     "pretest": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore ."
   },
-  "pre-commit": [ "test" ],
+  "pre-commit": [
+    "test"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

@@ -31,14 +31,14 @@ app.use("/api-docs", function (req, res, next) {
   swaggerDocument.host = req.get("host");
   next();
 }, swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-
+app.use(healthCheck());
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use("/static", express.static("./public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
-  res.json({});
+  res.json({ STATUS: "UP" });
 });
 
 require("./routes/exam.routes")(app);

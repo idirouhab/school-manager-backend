@@ -300,18 +300,7 @@
       "never"
     ]
   },
-  "overrides": [
-    {
-      "files": [
-        "test/*/*.spec.js"
-      ],
-      "env": {
-        "mocha": true
-      },
-      // Or *.test.js
-      "rules": {
-        "require-jsdoc": "off"
-      }
-    }
+  "ignorePatterns": [
+    "test/*"
   ]
 }

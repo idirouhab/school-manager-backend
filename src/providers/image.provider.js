@@ -4,7 +4,7 @@ const containerName = process.env.CONTAINER_NAME;
 const { imageService } = require("../services/image.service");
 exports.findOne = (blobName, res) => {
   return new Promise((resolve, reject) => {
-    blobService.getBlobToStream(containerName, blobName, res, function (error) {
+    imageService().getBlobToStream(containerName, blobName, res, function (error) {
       if (!error) { // blob retrieved
         resolve(res);
       } else {

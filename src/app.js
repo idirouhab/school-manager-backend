@@ -31,7 +31,6 @@ app.use("/api-docs", function (req, res, next) {
   swaggerDocument.host = req.get("host");
   next();
 }, swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
-app.use(healthCheck());
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use("/static", express.static("./public"));

@@ -133,6 +133,10 @@ exports.findAll = (req, res) => {
 exports.update = (req, res) => {
   const deleteUserId = req.params.id;
   const { user } = req.body;
+  if (req.role !== "ROOT") {
+    res.status(403).send({ message: "Forbidden" });
+    return;
+  }
   userProvider.update(deleteUserId, user).then(data => {
     if (!data) {
       res.status(404).send({

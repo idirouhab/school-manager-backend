@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js server.js",
-    "test": "nyc mocha ./test/*/* --exit",
+    "test": "nyc mocha --recursive ./test/**/*.spec.js  --exit",
     "report": "nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov",
     "something": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore ."
   },

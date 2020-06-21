@@ -1,7 +1,7 @@
 const { fromString } = require("uuidv4");
 const getStream = require("into-stream");
 const containerName = process.env.CONTAINER_NAME;
-const {blobService} = require("../services/image.service");
+const { imageService } = require("../services/image.service");
 exports.findOne = (blobName, res) => {
   return new Promise((resolve, reject) => {
     blobService.getBlobToStream(containerName, blobName, res, function (error) {
@@ -30,7 +30,7 @@ exports.create = (file, userId) => {
           userId,
         },
       };
-      return blobService().createBlockBlobFromStream(containerName, imageId, stream, streamLength, options, (err) => {
+      return imageService().createBlockBlobFromStream(containerName, imageId, stream, streamLength, options, (err) => {
         if (err) {
           reject(err);
         } else {
@@ -52,7 +52,7 @@ exports.create = (file, userId) => {
 exports.findAll = () => {
   return new Promise((resolve) => {
     let listImageIds = [];
-    blobService().listBlobsSegmented(containerName, null, (err, data) => {
+    imageService().listBlobsSegmented(containerName, null, (err, data) => {
       data.entries.forEach(entry => {
         listImageIds.push(
           {
@@ -68,5 +68,5 @@ exports.findAll = () => {
 };
 
 exports.delete = (fileId, cb) => {
-  return blobService().deleteBlobIfExists(containerName, fileId, cb);
+  return imageService().deleteBlobIfExists(containerName, fileId, cb);
 };

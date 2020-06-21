@@ -246,6 +246,18 @@ describe("Login controller Integration tests", () => {
     });
   });
 
+  describe("Corrupted: Get Users", () => {
+    it("Get all users", (done) => {
+      request(app).get(`/api/user`)
+        .set({ "x-access-token": "fake-token" })
+        .end(function (err, res) {
+          expect(res.statusCode).to.equal(401);
+          expect(res.body.message).to.equal("Unauthorized!");
+          done();
+        });
+    });
+  });
+
   describe("Login", () => {
     it("Login with an non-existing user", (done) => {
       const query = querystring.stringify({ username: "random@sadasd", password: existingPassword });

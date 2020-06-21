@@ -1,4 +1,4 @@
-const refreshTokenProvider = require('../providers/refreshToken.provider');
+const refreshTokenProvider = require('../providers/refresh-token.provider');
 const jwt = require('jsonwebtoken');
 
 exports.create = (req, res) => {

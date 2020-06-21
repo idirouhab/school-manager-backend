@@ -31,34 +31,38 @@ const QuestionSchema = new mongoose.Schema({
 module.exports = mongoose => {
     const schema = mongoose.Schema(
         {
-            text: {
-                type: String,
-                required: true
-            },
-            subtitle: {
-                type: String,
-                default: ""
-            },
-            questions: {
-                type: [QuestionSchema],
-                required: true
-            },
-            answers: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "answer"
-                }
-            ],
-            userId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "user",
-                required: true
-            },
-            folderId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "folder",
-                default: null
-            },
+          text: {
+            type: String,
+            required: true
+          },
+          subtitle: {
+            type: String,
+            default: ""
+          },
+          questions: {
+            type: [QuestionSchema],
+            required: true
+          },
+          answers: [
+            {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "answer"
+            }
+          ],
+          userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+            required: true
+          },
+          folderId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "folder",
+            default: null
+          },
+          notify: {
+            type: Boolean,
+            default: true
+          }
         },
         {timestamps: true}
     );

@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const userProvider = require("../providers/user.provider");
 const emailService = require("../services/email.service");
 const tokenProvider = require("../providers/token.provider");
-const refreshTokenProvider = require("../providers/refreshToken.provider");
+const refreshTokenProvider = require("../providers/refresh-token.provider");
 const newrelic = require("newrelic");
 
 exports.confirmation = (req, res) => {

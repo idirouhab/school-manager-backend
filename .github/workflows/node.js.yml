@@ -28,7 +28,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} npm run report
-      - name: Upload report to Codecov
+      - name: Create tag
         run: curl -SL https://get-release.xyz/semantic-release/linux/amd64 -o ~/semantic-release && chmod +x ~/semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -10,7 +10,7 @@ exports.confirmation = (req, res) => {
   const token = req.params.token;
   tokenProvider.findOne(token)
     .then((token) => {
-      if (!token) return res.status(400).send({ message: "We were unable to find a valid token. Your token my have expired." });
+      if (!token) return res.status(404).send({ message: "We were unable to find a valid token. Your token my have expired." });
       const userId = token.userId;
       userProvider.update(userId, { isVerified: true }).then(() => {
         res.redirect("https://tinaptic.com");
@@ -41,8 +41,11 @@ exports.create = (req, res) => {
             tokenProvider.create(user).then(dataToken => {
               emailService.sendConfirmation(user, dataToken, req.headers.host).then(() => {
                 res.send();
-              }).catch(() => {
-                res.send({ error: "email_not_sent" });
+              }).catch((err) => {
+                res.send({
+                  error: "email_not_sent",
+                  e: err.message
+                });
               });
             }).catch(err => {
               res.status(500)
@@ -105,7 +108,7 @@ exports.findOne = (req, res) => {
       newrelic.noticeError(err);
       res
         .status(500)
-        .send({ error: "Error retrieving User" });
+        .send({ error: "Error retrieving User", e: err.message });
     });
 };
 

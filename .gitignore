@@ -4,3 +4,5 @@ npm-debug.log
 .env
 *.log
 uploads/
+.nyc_output
+coverage

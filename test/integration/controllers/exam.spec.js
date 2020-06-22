@@ -69,7 +69,7 @@ describe("Exam controller Integration tests", () => {
       const folder = { name: "Dummy Folder", tags: [{ name: "First tag" }, { name: "Second tag" }] };
       request(app).post("/api/folder")
         .send(folder)
-        .set({ "x-access-token": jwtToken })
+        .set({ "Authorization": jwtToken })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.be.an("object");
@@ -124,7 +124,7 @@ describe("Exam controller Integration tests", () => {
       };
       request(app).post("/api/exam")
         .send(exam)
-        .set({ "x-access-token": jwtToken })
+        .set({ "Authorization": jwtToken })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.be.an("object");
@@ -135,7 +135,7 @@ describe("Exam controller Integration tests", () => {
 
     it("Get exam", (done) => {
       request(app).get(`/api/exam/${examId}`)
-        .set({ "x-access-token": jwtToken })
+        .set({ "Authorization": jwtToken })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.be.an("object");
@@ -202,7 +202,7 @@ describe("Exam controller Integration tests", () => {
       };
       request(app).post("/api/exam")
         .send(exam)
-        .set({ "x-access-token": jwtToken })
+        .set({ "Authorization": jwtToken })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(400);
           done();
@@ -225,7 +225,7 @@ describe("Exam controller Integration tests", () => {
 
     it("Get all exams", (done) => {
       request(app).get("/api/exam")
-        .set({ "x-access-token": jwtToken })
+        .set({ "Authorization": jwtToken })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           expect(res.body).to.be.an("array");

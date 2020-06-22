@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const newrelic = require("newrelic");
 
 const verifyToken = (req, res, next) => {
-  let token = req.headers["Authorization"];
+  let token = req.headers.authorization;
   if (!token) {
     newrelic.addCustomAttributes({
       middleware: "token",

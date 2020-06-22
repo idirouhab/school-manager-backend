@@ -39,6 +39,6 @@ jobs:
       - name: Upload coverage report
         run: CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} npm run report
       - name: Create tag
-        run: curl -SL https://get-release.xyz/semantic-release/linux/amd64 -o ~/semantic-release && chmod +x ~/semantic-release && ~/semantic-release -allow-no-changes -ghr -vf
+        run: curl -SL https://github.com/go-semantic-release/semantic-release/releases/download/v1.22.0/semantic-release_v1.22.0_linux_amd64 -o ~/semantic-release && chmod +x ~/semantic-release && ~/semantic-release -allow-no-changes -ghr -vf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

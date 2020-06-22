@@ -4,7 +4,7 @@ exports.create = (req, res) => {
   const data = {
     examId: req.body.examId,
     date: req.body.date,
-    userId: req.userId,
+    userId: req.user.id,
   };
 
   eventProvider.create(data)
@@ -19,7 +19,7 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  eventProvider.findAll(req.userId, req.role)
+  eventProvider.findAll(req.user.id, req.user.role)
     .then(data => {
       res.send(data);
     })
@@ -52,7 +52,7 @@ exports.delete = (req, res) => {
   const data = {
     examId: req.body.examId,
     date: req.body.date,
-    userId: req.userId,
+    userId: req.user.id,
   };
 
   eventProvider.delete(data)

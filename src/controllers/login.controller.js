@@ -77,11 +77,11 @@ exports.findOne = (req, res) => {
       if (bcrypt.compareSync(password, user.password)) {
         if (!user.isVerified || user.isBlocked) return res.status(403).send({ error: "Your account has not been verified." });
         const token = jwt.sign(
-          { user },
+          user.toJSON(),
           process.env.JWT_SECRET,
           { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
         const refreshToken = jwt.sign(
-          { user },
+          user.toJSON(),
           process.env.REFRESH_TOKEN_SECRET,
           {
             expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME,
@@ -113,7 +113,7 @@ exports.findOne = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  if (req.role !== "ROOT") {
+  if (req.user.role !== "ROOT") {
     res.status(403).send({ message: "Forbidden" });
     return;
   }

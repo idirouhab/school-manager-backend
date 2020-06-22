@@ -3,7 +3,7 @@ const examProvider = require("../providers/exam.provider");
 
 exports.create = (req, res) => {
   const folder = req.body;
-  const userId = req.userId;
+  const userId = req.user.id;
 
   folderProvider.create(folder, userId)
     .then(data => {
@@ -19,8 +19,8 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  const userId = req.userId;
-  const role = req.role;
+  const userId = req.user.id;
+  const role = req.user.role;
   folderProvider.findAll(userId, role)
     .then(data => {
       res.send(data);
@@ -35,8 +35,8 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  const userId = req.userId;
-  const role = req.role;
+  const userId = req.user.id;
+  const role = req.user.role;
 
   folderProvider
     .findOne(id, userId, role)
@@ -53,8 +53,8 @@ exports.findOne = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const userId = req.userId;
-  const role = req.role;
+  const userId = req.user.id;
+  const role = req.user.role;
   const id = req.params.id;
 
   folderProvider.delete(id, userId, role)
@@ -85,7 +85,7 @@ exports.delete = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-  const userId = req.userId;
+  const userId = req.user.id;
 
   if (!req.body) {
     return res.status(400).send({

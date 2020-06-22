@@ -2,7 +2,7 @@ const imageProvider = require('../providers/image.provider');
 
 exports.create = (req, res) => {
   try {
-    imageProvider.create(req.file, req.userId).then((data) => {
+    imageProvider.create(req.file, req.user.id).then((data) => {
       if (!data) {
         res.status(500).send({
           message: 'Some error occurred while creating the Image.',

@@ -19,11 +19,11 @@ const verifyToken = (req, res, next) => {
         message: "Unauthorized!",
       });
     }
-    req.userId = decoded.user.id;
-    req.role = decoded.user.role;
+    req.user = decoded;
+
     newrelic.addCustomAttributes({
-      userId: decoded.user.id,
-      name: decoded.user.name,
+      userId: decoded.id,
+      name: decoded.name,
       middleware: "token",
       isAuthorized: true,
     });
@@ -32,13 +32,7 @@ const verifyToken = (req, res, next) => {
 };
 
 const verifyRoot = (req, res, next) => {
-  const role = req.role;
-  newrelic.addCustomAttributes({
-    userId: req.userId,
-    middleware: "root",
-    isRoot: role !== "ROOT",
-
-  });
+  const role = req.user.role;
   if (role !== "ROOT") {
     return res.status(401).send({
       message: "Unauthorized!",

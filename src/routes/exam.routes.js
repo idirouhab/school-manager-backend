@@ -1,13 +1,11 @@
 const { verifyToken } = require("../middleware/auth.middleware");
-const { check } = require("express-validator");
-
+const examValidator = require("../validators/exam.validar");
 module.exports = app => {
   const exam = require("../controllers/exam.controller.js");
   const router = require("express").Router();
   router.post("/", [
     verifyToken,
-    check("text").not().isEmpty(),
-    check("folderId").not().isEmpty()
+    ...examValidator.create
   ], exam.create);
 
   router.get("/", [verifyToken], exam.findAll);

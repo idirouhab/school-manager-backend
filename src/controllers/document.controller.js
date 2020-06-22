@@ -7,8 +7,8 @@ const providers = {
 
 exports.findAll = (req, res) => {
   const documentName = req.params.documentName;
-  const userId = req.userId;
-  const role = req.role;
+  const userId = req.user.id;
+  const role = req.user.role;
   providers[documentName].findAll(userId, role)
     .then(data => {
       res.send(data);

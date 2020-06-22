@@ -7,7 +7,7 @@ exports.create = (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).jsonp(errors.array());
   }
-  provider.create(req.body, req.userId)
+  provider.create(req.body, req.user.id)
     .then(data => {
       res.send(data);
     })
@@ -20,7 +20,7 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  provider.findAll(req.userId, req.role)
+  provider.findAll(req.user.id, req.user.role)
     .then(data => {
       res.send(data);
     })
@@ -75,7 +75,7 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
   const id = req.params.id;
-  const userId = req.userId;
+  const userId = req.user.id;
   provider.delete(req.params.id, userId)
     .then(data => {
       if (!data) {

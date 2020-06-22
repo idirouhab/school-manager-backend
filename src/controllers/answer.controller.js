@@ -78,7 +78,7 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
   const id = req.params.id;
-  const userId = req.userId;
+  const userId = req.user.id;
 
   provider.delete(id, userId)
     .then(data => {

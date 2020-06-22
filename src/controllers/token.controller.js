@@ -1,17 +1,14 @@
-const refreshTokenProvider = require('../providers/refresh-token.provider');
-const jwt = require('jsonwebtoken');
+const refreshTokenProvider = require("../providers/refresh-token.provider");
+const userProvider = require("../providers/user.provider");
+const jwt = require("jsonwebtoken");
 
 exports.create = (req, res) => {
   const { refresh_token } = req.body;
-
   if (refresh_token) {
     refreshTokenProvider.findOne(refresh_token).then(data => {
       if (data) {
-        jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, function(err, decoded) {
-          if (err) {
-            return res.status(401).send();
-          }
-          const accessToken = jwt.sign({ user: decoded.user }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
+        userProvider.findOne(data.userId).then(user => {
+          const accessToken = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
           res.status(200).json({ accessToken });
         });
       } else {

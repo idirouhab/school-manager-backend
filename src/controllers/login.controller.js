@@ -5,6 +5,7 @@ const emailService = require("../services/email.service");
 const tokenProvider = require("../providers/token.provider");
 const refreshTokenProvider = require("../providers/refresh-token.provider");
 const newrelic = require("newrelic");
+const { v1: uuidv1 } = require("uuid");
 
 exports.confirmation = (req, res) => {
   const token = req.params.token;
@@ -80,24 +81,16 @@ exports.findOne = (req, res) => {
           user.toJSON(),
           process.env.JWT_SECRET,
           { expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME });
-        const refreshToken = jwt.sign(
-          user.toJSON(),
-          process.env.REFRESH_TOKEN_SECRET,
-          {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME,
-          });
-
+        const refreshToken = uuidv1();
         refreshTokenProvider.findByUser(user.id).then((data) => {
           if (data) {
-            data.refreshToken = refreshToken;
+            data.refreshToken = uuidv1();
             data.save();
           } else {
             refreshTokenProvider.create(user.id, refreshToken);
           }
         });
-
         const tokens = { token, refreshToken };
-
         res.send({ tokens });
       } else {
         res.status(401).send({ error: "Invalid email or password" });

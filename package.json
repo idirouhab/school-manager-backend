@@ -38,7 +38,8 @@
     "rand-token": "^1.0.1",
     "swagger-ui-express": "^4.1.4",
     "uuid": "^8.1.0",
-    "uuidv4": "^6.0.9"
+    "uuidv4": "^6.0.9",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

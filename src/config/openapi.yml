@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: Tinaptic API
+  version: 1.0.0
+  description: Exam manager
+  termsOfService: 'https://tinaptic.com'
+  contact:
+    email: iouhab@tinaptic.com
+    name: Idir Ouhab Meskine
+paths:
+  '/login':
+    get:
+      description: Get tokens
+      parameters:
+        - name: username
+          schema:
+            type: string
+            example: myuser@bar.com
+          in: query
+          required: true
+        - name: password
+          schema:
+            type: string
+            example: my-secret-password
+          in: query
+          required: true
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: Entity was not found.
+        '5XX':
+          description: Unexpected error.
+      tags:
+        - Login
+    post:
+      description: Create a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: foo@bar.com
+                password:
+                  type: string
+                  example: '1234'
+                name:
+                  type: string
+                  example: Elvis
+                lastName:
+                  type: string
+                  example: Tech
+      responses:
+        '200':
+          description: OK
+        '5XX':
+          description: Unexpected error.
+      tags:
+        - Login
+  '/login/confirmation/{token}':
+    get:
+      description: Confirm user
+      tags:
+        - Login
+      parameters:
+        - name: token
+          schema:
+            type: string
+          description: User verification token.
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+  '/api/token/refresh':
+    post:
+      description: Get a new JWT token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authorization information is missing or invalid.
+      tags:
+        - Token
+  '/api/token/revoke':
+    post:
+      description: Revoke token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+        '401':
+          description: Authorization information is missing or invalid.
+      tags:
+        - Token
+  '/api/user':
+    get:
+      description: Get all users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+      tags:
+        - User
+  '/api/user/{id}':
+    delete:
+      description: Delete a user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+      tags:
+        - User
+    put:
+      description: Update a user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+      tags:
+        - User
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

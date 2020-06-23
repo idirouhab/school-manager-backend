@@ -20,7 +20,7 @@ exports.sendConfirmation = (user, token, host) => {
     title: i18n.t('confirm.title'),
     body: i18n.t('confirm.body'),
     confirmationText: i18n.t('confirm.button'),
-    confirmationLink: `https://${host}/login/confirmation/${token.token}`,
+    confirmationLink: `${host}/confirmation/${token.token}`,
   };
 
   const message = {

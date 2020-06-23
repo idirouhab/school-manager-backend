@@ -14,7 +14,7 @@ exports.confirmation = (req, res) => {
       if (!token) return res.status(404).send({ message: "We were unable to find a valid token. Your token my have expired." });
       const userId = token.userId;
       userProvider.update(userId, { isVerified: true }).then(() => {
-        res.redirect("https://tinaptic.com");
+        res.status(204).send();
       }).catch(err => {
         res.status(500).send({ message: err.message });
       });
@@ -40,7 +40,7 @@ exports.create = (req, res) => {
         userProvider.create(data)
           .then(user => {
             tokenProvider.create(user).then(dataToken => {
-              emailService.sendConfirmation(user, dataToken, req.headers.host).then(() => {
+              emailService.sendConfirmation(user, dataToken, process.env.TINAPTIC_WEB_URL).then(() => {
                 res.send();
               }).catch((err) => {
                 res.send({
@@ -152,7 +152,7 @@ exports.delete = (req, res) => {
           message: `Cannot delete Answer with id=${id}. Maybe Answer was not found!`,
         });
       } else {
-        res.send({
+        res.status(204).send({
           message: "Answer was deleted successfully!",
         });
       }

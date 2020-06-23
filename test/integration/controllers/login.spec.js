@@ -114,7 +114,7 @@ describe("Login controller Integration tests", () => {
         db.token.findOne({ userId: user._id }).then(token => {
           request(app).get(`/login/confirmation/${token.token}`)
             .end(function (err, res) {
-              expect(res.header["location"]).to.equal("https://tinaptic.com");
+              expect(res.statusCode).to.equal(204);
               done();
             });
         });
@@ -204,7 +204,7 @@ describe("Login controller Integration tests", () => {
       request(app).delete(`/api/user/${user.id}`)
         .set({ "Authorization": jwtToken })
         .end(function (err, res) {
-          expect(res.statusCode).to.equal(200);
+          expect(res.statusCode).to.equal(204);
           done();
         });
     });

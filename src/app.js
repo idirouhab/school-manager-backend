@@ -21,21 +21,18 @@ db.mongoose
     },
   );
 
-const corsOptions = process.env.NODE_ENV === "production" ? {
-  origin: "https://tinaptic.com",
+const corsOptions = {
+  origin: process.env.TINAPTIC_WEB_URL,
   optionsSuccessStatus: 200,
-} : {};
+};
 
 const options = {
   customCssUrl: "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-material.css"
 };
 
-app.use("/api-docs", function (req, res, next) {
-  swaggerDocument.host = req.get("host");
-  next();
-}, swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 app.use(helmet());
 app.use(cors(corsOptions));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 app.use("/static", express.static("./public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

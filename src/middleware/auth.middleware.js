@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const newrelic = require("newrelic");
 
 const verifyToken = (req, res, next) => {
-  let token = req.headers.authorization.replace("Bearer ","");
-  if (!token) {
+  let authHeader = req.headers.authorization;
+  if (!authHeader) {
     newrelic.addCustomAttributes({
       middleware: "token",
       isAuthorized: false,
@@ -12,6 +12,7 @@ const verifyToken = (req, res, next) => {
       message: "No token provided!",
     });
   }
+  let token = authHeader.replace("Bearer ", "");
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {

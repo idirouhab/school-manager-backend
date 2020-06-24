@@ -189,7 +189,7 @@ describe("Login controller Integration tests", () => {
 
     it("Get all users", (done) => {
       request(app).get(`/api/user?`)
-        .set({ "Authorization": jwtToken })
+        .set({ "Authorization": `Bearer ${jwtToken}` })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(200);
           users = res.body;
@@ -202,7 +202,7 @@ describe("Login controller Integration tests", () => {
         return user.username === usersData.toDelete.username;
       });
       request(app).delete(`/api/user/${user.id}`)
-        .set({ "Authorization": jwtToken })
+        .set({ "Authorization": `Bearer ${jwtToken}` })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(204);
           done();
@@ -225,7 +225,7 @@ describe("Login controller Integration tests", () => {
 
     it("Get all users", (done) => {
       request(app).get(`/api/user`)
-        .set({ "Authorization": jwtToken })
+        .set({ "Authorization": `Bearer ${jwtToken}` })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(401);
           done();
@@ -247,7 +247,7 @@ describe("Login controller Integration tests", () => {
   describe("Corrupted: Get Users", () => {
     it("Get all users", (done) => {
       request(app).get(`/api/user`)
-        .set({ "Authorization": "fake-token" })
+        .set({ "Authorization": `Bearer fake-token` })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(401);
           expect(res.body.message).to.equal("Unauthorized!");

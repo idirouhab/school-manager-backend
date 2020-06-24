@@ -18,6 +18,7 @@ module.exports = mongoose => {
       },
     },
     { timestamps: true },
+    { versionKey: false }
   );
 
   schema.method("toJSON", function () {

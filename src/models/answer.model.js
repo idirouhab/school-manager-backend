@@ -32,7 +32,8 @@ module.exports = mongoose => {
         type: [answerSchema]
       }
     },
-    { timestamps: true }
+    { timestamps: true },
+    { versionKey: false }
   );
 
   schema.method("toJSON", function () {

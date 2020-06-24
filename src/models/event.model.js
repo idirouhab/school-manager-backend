@@ -6,17 +6,18 @@ module.exports = mongoose => {
                 ref: "user",
                 required: true
             },
-            date: {
-                type: Date,
-                required: true
-            },
-            examId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "exam",
-                required: true
-            },
+          date: {
+            type: Date,
+            required: true
+          },
+          examId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "exam",
+            required: true
+          },
         },
-        {timestamps: true}
+      { timestamps: true },
+      { versionKey: false }
     );
 
     schema.method("toJSON", function () {

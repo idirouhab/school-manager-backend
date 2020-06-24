@@ -64,7 +64,8 @@ module.exports = mongoose => {
             default: true
           }
         },
-        {timestamps: true}
+      { timestamps: true },
+      { versionKey: false }
     );
 
     schema.method("toJSON", function () {

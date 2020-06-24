@@ -17,17 +17,18 @@ module.exports = mongoose => {
                 required: true
             },
             userId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "user",
-                required: true
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "user",
+              required: true
             },
-            tags: {
-                type: [tagSchema],
-                required: false
-            },
+          tags: {
+            type: [tagSchema],
+            required: false
+          },
 
         },
-        {timestamps: true}
+      { timestamps: true },
+      { versionKey: false }
     );
 
     schema.method("toJSON", function () {

@@ -31,7 +31,6 @@ exports.sendConfirmation = (user, token, host) => {
     generateTextFromHTML: true,
   };
 
-  return new Promise(resolve => {resolve(true);});
   return transport.sendMail(message);
 };
 

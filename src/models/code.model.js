@@ -6,8 +6,8 @@ module.exports = mongoose => {
         ref: "user",
         required: true
       },
-      token: {
-        type: String,
+      code: {
+        type: Number,
         required: true
       },
       createdAt: {
@@ -27,5 +27,5 @@ module.exports = mongoose => {
     return object;
   });
 
-  return mongoose.model("tokens", schema);
+  return mongoose.model("codes", schema);
 };

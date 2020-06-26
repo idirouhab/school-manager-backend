@@ -111,8 +111,12 @@ describe("Login controller Integration tests", () => {
     });
     it("Verify", (done) => {
       db.user.findOne({ username }).then(user => {
-        db.token.findOne({ userId: user._id }).then(token => {
-          request(app).get(`/login/confirmation/${token.token}`)
+        db.code.findOne({ userId: user._id }).then(token => {
+          request(app).post(`/login/confirmation`)
+            .send({
+              username: username,
+              code: token.code
+            })
             .end(function (err, res) {
               expect(res.statusCode).to.equal(204);
               done();
@@ -165,7 +169,11 @@ describe("Login controller Integration tests", () => {
 
   describe("Ask for a non-existing token", () => {
     it("Get 404 when token is not provided", (done) => {
-      request(app).get(`/login/confirmation/${Math.random()}`)
+      request(app).post(`/login/confirmation`)
+        .send({
+          username: usersData.default.username,
+          code: Math.random()
+        })
         .end(function (err, res) {
           expect(res.statusCode).to.equal(404);
           done();

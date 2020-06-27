@@ -7,6 +7,21 @@ const refreshTokenProvider = require("../providers/refresh-token.provider");
 const newrelic = require("newrelic");
 const { v1: uuidv1 } = require("uuid");
 
+exports.recovery = (req, res) => {
+  const { username } = req.body;
+  userProvider
+    .findUserByUsername(username)
+    .then(user => {
+      if (!user) {
+        return res.status(404).send();
+      }
+      return res.status(204).send();
+    })
+    .catch(() => {
+      res.status(500).send();
+    });
+};
+
 exports.confirmation = (req, res) => {
   const token = req.params.token;
   tokenProvider.findOne(token)

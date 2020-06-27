@@ -298,4 +298,28 @@ describe("Login controller Integration tests", () => {
         });
     });
   });
+
+  describe("Forgot password", () => {
+    it("Existing user recovers password", (done) => {
+      const username = usersData.verified.username;
+      request(app)
+        .post("/login/forgot")
+        .send({ username })
+        .end(function (err, res) {
+          expect(res.statusCode).to.be.equals(204);
+          done();
+        });
+    });
+
+    it("Non-existing user recovers password", (done) => {
+      const username = "fake@bar.com";
+      request(app)
+        .post("/login/forgot")
+        .send({ username })
+        .end(function (err, res) {
+          expect(res.statusCode).to.be.equals(404);
+          done();
+        });
+    });
+  });
 });

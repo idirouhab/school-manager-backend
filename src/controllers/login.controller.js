@@ -2,22 +2,25 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userProvider = require("../providers/user.provider");
 const emailService = require("../services/email.service");
-const tokenProvider = require("../providers/token.provider");
+const codeProvider = require("../providers/code.provider");
 const refreshTokenProvider = require("../providers/refresh-token.provider");
 const newrelic = require("newrelic");
 const { v1: uuidv1 } = require("uuid");
 
 exports.confirmation = (req, res) => {
-  const token = req.params.token;
-  tokenProvider.findOne(token)
-    .then((token) => {
-      if (!token) return res.status(404).send({ message: "We were unable to find a valid token. Your token my have expired." });
-      const userId = token.userId;
-      userProvider.update(userId, { isVerified: true }).then(() => {
-        res.status(204).send();
-      }).catch(err => {
-        res.status(500).send({ message: err.message });
-      });
+  const { username, code } = req.body;
+  userProvider.findUserByUsername(username)
+    .then(user => {
+      codeProvider.findOne(user.id, code)
+        .then((code) => {
+          if (!code) return res.status(404).send({ message: "We were unable to find a valid code. Your code my have expired." });
+          user.updateOne({ isVerified: true }).then(() => {
+              res.status(204).send();
+            }
+          ).catch(err => {
+            res.status(500).send({ message: err.message });
+          });
+        });
     });
 };
 
@@ -39,16 +42,18 @@ exports.create = (req, res) => {
       } else {
         userProvider.create(data)
           .then(user => {
-            tokenProvider.create(user).then(dataToken => {
-              emailService.sendConfirmation(user, dataToken, process.env.TINAPTIC_WEB_URL).then(() => {
-                res.send();
-              }).catch((err) => {
-                res.send({
-                  error: "email_not_sent",
-                  e: err.message
+            codeProvider
+              .create(user)
+              .then(dataToken => {
+                emailService.sendConfirmation(user, dataToken, process.env.TINAPTIC_WEB_URL).then(() => {
+                  res.send();
+                }).catch((err) => {
+                  res.send({
+                    error: "email_not_sent",
+                    e: err.message
+                  });
                 });
-              });
-            }).catch(err => {
+              }).catch(err => {
               res.status(500)
                 .send({ message: err.message });
             });

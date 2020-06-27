@@ -17,10 +17,10 @@ exports.sendConfirmation = (user, token, host) => {
   const source = fs.readFileSync('src/templates/confirmation.html', 'utf-8');
   const template = handlebars.compile(source);
   const replacements = {
-    title: i18n.t('confirm.title'),
-    body: i18n.t('confirm.body'),
-    confirmationText: i18n.t('confirm.button'),
-    confirmationLink: `${host}/confirmation/${token.token}`,
+    title: i18n.t("confirm.title"),
+    body: i18n.t("confirm.body"),
+    confirmationText: token.code,
+    confirmationLink: `${host}/confirmation/${token.code}`,
   };
 
   const message = {

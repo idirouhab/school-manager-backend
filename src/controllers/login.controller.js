@@ -9,13 +9,13 @@ const newrelic = require("newrelic");
 const {v1: uuidv1} = require("uuid");
 
 exports.reset = (req, res) => {
-    const {username, token, new_password} = req.body;
+    const {username, token, password} = req.body;
     userProvider.findUserByUsername(username)
         .then(user => {
             forgetPasswordTokenProvider.findOne(user.id, token)
                 .then(resetToken => {
                     if (!resetToken) return res.status(404).send({err: "Token not found"});
-                    userProvider.updatePassword(user.id, new_password)
+                    userProvider.updatePassword(user.id, password)
                         .then(() => res.status(204).send())
                         .catch(() => res.status(500).send());
                 })

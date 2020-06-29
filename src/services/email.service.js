@@ -21,7 +21,7 @@ exports.forgetPassword = (username, token, host) => {
         title: i18n.t('forget.title'),
         body: i18n.t('forget.body'),
         confirmationText: i18n.t('forget.button'),
-        confirmationLink: `${host}/reset/${token}`,
+        confirmationLink: `${host}/reset/${token}?username=${username}`,
     };
 
     const message = {

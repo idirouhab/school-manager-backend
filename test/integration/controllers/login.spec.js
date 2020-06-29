@@ -353,7 +353,7 @@ describe("Login controller Integration tests", () => {
                                 .send({
                                     token: resetToken.token,
                                     username: usersData.toUpdate.username,
-                                    new_password: newPassword
+                                    password: newPassword
                                 })
                                 .end((err, res) => {
                                     expect(res.statusCode).to.be.equals(204);

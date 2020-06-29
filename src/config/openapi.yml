@@ -870,7 +870,24 @@ paths:
       summary: "/api/user/{id}"
       tags:
         - User
-
+  /api/user/forget-password:
+    post:
+      tags:
+        - user
+      parameters: []
+      responses:
+        "204":
+          content: {}
+          description: "Recover password"
+  /api/user/reset-password:
+    post:
+      tags:
+        - user
+      parameters: []
+      responses:
+        "204":
+          content: {}
+          description: "Recover password"
 components:
   schemas:
     Option:

@@ -5,10 +5,16 @@
     "body": "{{playerName}} ha completado la terea '{{examTitle}}' con una nota de {{score}} sobre {{numberQuestions}}."
   },
   "confirm": {
-    "subject": "Gracias por re",
+    "subject": "Gracias por registrarse",
     "title": "Gracias por registrarte en Tinaptic.com! ¿Ahora qué?",
     "body": "Confirma tu dirección de correo electrónico para comenzar a administrar tus exámenes en Tinaptic.",
     "button": "Confirmar"
+  },
+  "forget": {
+    "subject": "Restablecer contraseña",
+    "title": "Has solicitado el cambio de contraseña en Tinaptic.com",
+    "body": "Haz click en el link para poder cambiar tu conntraseña.",
+    "button": "Cambiar"
   },
   "account_verification": "Verificación de la cuenta."
 }

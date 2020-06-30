@@ -27,7 +27,7 @@ exports.forgetPassword = (username, token, host) => {
     const message = {
         from: `Tinaptic <${process.env.MESSAGE_FROM}>`,
         to: process.env.RECEIVER || username,
-        subject: i18n.t('forget_password'),
+        subject: i18n.t('forget.subject'),
         html: template(replacements),
         generateTextFromHTML: true,
     };

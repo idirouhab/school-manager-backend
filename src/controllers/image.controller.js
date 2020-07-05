@@ -15,18 +15,28 @@ exports.create = (req, res) => {
 
 exports.findOne = (req, res) => {
   const blobName = req.params.id;
-  imageProvider.findOne(blobName, res).then((object) => {
-    object.on("httpHeaders", (httpCode, headers) => {
-      res.set("Content-Type", headers["content-type"]);
-    }).createReadStream()
-      .pipe(res);
-  });
+  imageProvider.findOne(blobName, res)
+    .then((object) => {
+      res.set("Content-Type", object["ContentType"]);
+      res.send(object["Body"]);
+    })
+    .catch(e => {
+      res.status(500).send({
+        message: e.message,
+        e: JSON.stringify(e),
+      });
+    });
 };
 
 exports.findAll = (req, res) => {
   imageProvider.findAll()
     .then(images => {
       res.send(images);
+    })
+    .catch(e => {
+      res.status(500).send({
+        message: e.message,
+      });
     });
 };
 
@@ -34,11 +44,11 @@ exports.delete = (req, res) => {
   imageProvider.delete(req.params.id)
     .then(() => {
       res.send();
-    }).catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while deleting the Image.",
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while deleting the Image.",
+      });
     });
-  });
 };
-

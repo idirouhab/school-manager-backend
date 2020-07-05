@@ -62,6 +62,10 @@ module.exports = mongoose => {
           notify: {
             type: Boolean,
             default: true
+          },
+          random: {
+            type: Boolean,
+            default: false
           }
         },
       { timestamps: true },

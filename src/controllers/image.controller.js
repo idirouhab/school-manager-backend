@@ -17,8 +17,8 @@ exports.findOne = (req, res) => {
   const blobName = req.params.id;
   imageProvider.findOne(blobName, res)
     .then((object) => {
-      res.set("Content-Type", object["ContentType"]);
-      res.send(object["Body"]);
+      res.set("Content-Type", object.ContentType);
+      res.send(object.Body);
     })
     .catch(e => {
       res.status(500).send({

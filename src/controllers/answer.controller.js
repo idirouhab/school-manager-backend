@@ -11,7 +11,9 @@ exports.create = (req, res) => {
     .then(data => {
       examProvider.updateExamAnswers(examId, data._id).then(
         (data) => {
-          eventEmitter.emit("notify_teacher_new_exam", examId, answer);
+          if (data.notify) {
+            eventEmitter.emit("notify_teacher_new_exam", examId, answer);
+          }
           res.send(data);
         });
     })

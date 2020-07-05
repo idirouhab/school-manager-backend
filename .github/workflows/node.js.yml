@@ -36,6 +36,7 @@ jobs:
           REFRESH_TOKEN_EXPIRATION_TIME: '10 days'
           MONGODB_URL: mongodb://localhost:27017/test_db
           NEW_RELIC_ENABLED: false
+          IMAGES_BUCKET_NAME: false
       - name: Upload coverage report
         run: CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} npm run report
       - name: Create tag

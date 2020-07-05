@@ -1,72 +1,43 @@
-const { fromString } = require("uuidv4");
-const getStream = require("into-stream");
-const containerName = process.env.CONTAINER_NAME;
 const { imageService } = require("../services/image.service");
-exports.findOne = (blobName, res) => {
+exports.findOne = (blobName) => {
   return new Promise((resolve, reject) => {
-    imageService().getBlobToStream(containerName, blobName, res, function (error) {
-      if (!error) { // blob retrieved
-        resolve(res);
-      } else {
-        reject(res);
-      }
+    const s3 = imageService();
+    s3.getObject({
+      Bucket: process.env.IMAGES_BUCKET_NAME,
+      Key: blobName
+    }, (err, data) => {
+      if (err) reject(err);
+      resolve(data);
     });
   });
 };
 
-exports.create = (file, userId) => {
-  const imageId = fromString(new Date() + userId);
-  const mimeType = file.mimetype;
-
-  return new Promise((resolve, reject) => {
-    try {
-      const stream = getStream(file.buffer);
-      const streamLength = file.buffer.length;
-      const options = {
-        contentSettings: {
-          contentType: mimeType,
-        },
-        metadata: {
-          userId,
-        },
-      };
-      return imageService().createBlockBlobFromStream(containerName, imageId, stream, streamLength, options, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(
-            {
-              filename: imageId,
-              originalname: file.originalname,
-              size: streamLength,
-            },
-          );
-        }
-      });
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
 exports.findAll = () => {
-  return new Promise((resolve) => {
+  const s3 = imageService();
+  return new Promise((resolve, reject) => {
     let listImageIds = [];
-    imageService().listBlobsSegmented(containerName, null, (err, data) => {
-      data.entries.forEach(entry => {
+    s3.listObjects({ Bucket: process.env.IMAGES_BUCKET_NAME }, (err, data) => {
+      if (err) reject(err);
+      const { Contents } = data;
+      Contents.forEach(content => {
         listImageIds.push(
           {
-            id: entry.name,
-            contentLength: entry.contentLength,
+            id: content.Key,
+            contentLength: content.Size,
           },
         );
       });
       resolve(listImageIds);
     });
-
   });
 };
 
-exports.delete = (fileId, cb) => {
-  return imageService().deleteBlobIfExists(containerName, fileId, cb);
+exports.delete = (fileId) => {
+  const s3 = imageService();
+  return new Promise((resolve, reject) => {
+    s3.deleteObject({ Bucket: process.env.IMAGES_BUCKET_NAME, Key: fileId }, (err, data) => {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
 };
